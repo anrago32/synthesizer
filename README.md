@@ -1,2 +1,4 @@
-# synthesizer
-Audio synthesizer written in haskell
+# Synthesizer
+This is an audio synthesizer written in haskell.
+
+Development is still in early stages.
