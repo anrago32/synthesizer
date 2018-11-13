@@ -12,7 +12,6 @@ main = do
 type Note = (Pitch, Octave)
 
 data Pitch = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
-  deriving (Show)
 
 type Octave = Int
 
