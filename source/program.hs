@@ -8,10 +8,12 @@ main = do
   print . noteFreq  . intToNote $ 57
   print . noteFreq  . intToNote . noteToInt $ (A, 4)
 
--- Note definition
+-- Note Definition
 type Note = (Pitch, Octave)
+
 data Pitch = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
   deriving (Show)
+
 type Octave = Int
 
 intToNote :: Int -> Note
