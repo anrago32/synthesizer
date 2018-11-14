@@ -7,7 +7,7 @@ mkdir -p executable
 cd source
 
 ghc program.hs
-mv program ../executable/program
+mv program ../executable
 
-rm program.hi
-rm program.o
+rm *.hi
+rm *.o
