@@ -3,7 +3,6 @@ module Main where
 main :: IO ()
 main = do
   print . noteToInt $ (A, 4)
-  print . noteToInt $ (A, 4)
   print . noteFreq  $ (A, 4)
   print . noteFreq  . intToNote $ 57
   print . noteFreq  . intToNote . noteToInt $ (A, 4)
