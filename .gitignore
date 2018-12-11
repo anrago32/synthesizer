@@ -1,1 +1,3 @@
 executable
+*.hi
+*.o
