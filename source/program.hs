@@ -1,6 +1,6 @@
 module Main where
 
-import Sound.PortAudio
+import Sound.Pulse.Simple
 import AudioGeneration
 import Pitch
 
