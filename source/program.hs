@@ -6,10 +6,12 @@ import ToneGeneration
 
 main :: IO ()
 main = do
-  s <- simpleNew Nothing "example"
-    Play Nothing "this is an example application"
-    (SampleSpec (F32 LittleEndian) 48000 1) Nothing Nothing
-  let times = [0..48000]
+  let sampleFormat = F32 LittleEndian
+  let sampleSpec = SampleSpec sampleFormat 48000 1
+  s <- simpleNew Nothing "nothing"
+    Play Nothing "nothing"
+    sampleSpec Nothing Nothing
+  let times = [0..48000 * 4]
   let tone1 = generateTone (C, 5) times
   let tone2 = generateTone (E, 5) times
   let tone3 = generateTone (G, 5) times
