@@ -7,19 +7,19 @@ import ToneGeneration
 
 main :: IO ()
 main = do
+  -- Initialize window
   initGUI
   window <- windowNew
   set window
     [ windowTitle := "Synthesizer"
     , containerBorderWidth := 20
     ]
-
+  -- Construct window
   button <- buttonNew
   button `onClicked` playChord
   box <- labelBox "Play Chord"
   button `containerAdd` box
   window `containerAdd` button
-
   widgetShowAll window
   window `onDestroy` mainQuit
   mainGUI
@@ -34,15 +34,15 @@ labelBox txt = do
 
 playChord :: IO ()
 playChord = do
+  -- Initialize simple object
   let sampleFormat = F32 LittleEndian
   let sampleSpec = SampleSpec sampleFormat 48000 1
   s <- simpleNew Nothing ""
     Play Nothing ""
     sampleSpec Nothing Nothing
-
+  -- Play audio waveform
   let times = [0..48000]
   let audio = map cMajor times
-
   simpleWrite s audio
   simpleDrain s
   simpleFree s
