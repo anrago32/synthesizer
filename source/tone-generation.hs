@@ -2,13 +2,12 @@ module ToneGeneration where
 
 import PitchConversion
 
-generateChord :: [[Float]] -> [Float]
+generateChord :: [Float] -> Float
 generateChord [tone] = tone
-generateChord (tone:tones) = map (/2) (zipWith (+) tone (generateChord tones))
+generateChord (tone:tones) = (tone + generateChord tones) / 2
 
-generateTone :: Pitch -> [Int] -> [Float]
-generateTone pitch times = map wave times
-  where frequency = scientificPitch pitch
-        period time = fromIntegral time * frequency * pi * 2 / sampleRate
+generateTone :: Pitch -> Int -> Float
+generateTone pitch time = sin period
+  where frequency = standardPitch pitch
+        period = fromIntegral time * frequency * pi * 2 / sampleRate
         sampleRate = 48000
-        wave time = sin $ period time
