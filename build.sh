@@ -6,5 +6,5 @@ cd $(dirname $0)
 mkdir -p executable
 cd source
 
-ghc program.hs pitch-conversion.hs tone-generation.hs -o program
+ghc program.hs audio-generation.hs pitch-conversion.hs -o program
 mv program ../executable

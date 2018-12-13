@@ -2,8 +2,7 @@ module Main where
 
 import Graphics.UI.Gtk
 import Sound.Pulse.Simple
-import PitchConversion
-import ToneGeneration
+import AudioGeneration
 
 main :: IO ()
 main = do
@@ -22,12 +21,6 @@ main = do
   widgetShowAll window
   window `onDestroy` mainQuit
   mainGUI
-
-cMajor :: Int -> Float
-cMajor time = generateChord [tone1, tone2, tone3]
-  where tone1 = generateTone (C, 5) time
-        tone2 = generateTone (E, 5) time
-        tone3 = generateTone (G, 5) time
 
 labelBox :: String -> IO HBox
 labelBox txt = do
