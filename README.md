@@ -8,8 +8,8 @@ Development is still in very early stages.
 
 ## Gtk Graphics
 
-Graphics for this project are managed using the gtk2hs Haskell library.
+Graphics for this project are managed using the Gtk2Hs Haskell library.
 
 ## Pulse Audio
 
-Audio for this project is managed using the pulse-simple Haskell library.
+Audio for this project is managed using the PulseAudio Haskell library.
