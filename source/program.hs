@@ -23,6 +23,12 @@ main = do
   window `onDestroy` mainQuit
   mainGUI
 
+cMajor :: Int -> Float
+cMajor time = generateChord [tone1, tone2, tone3]
+  where tone1 = generateTone (C, 5) time
+        tone2 = generateTone (E, 5) time
+        tone3 = generateTone (G, 5) time
+
 labelBox :: String -> IO HBox
 labelBox txt = do
   box <- hBoxNew False 0
@@ -31,21 +37,17 @@ labelBox txt = do
   boxPackStart box label PackNatural 3
   return box
 
-playChord :: IO ()
-playChord = do
+playAudio :: [Float] -> IO ()
+playAudio audio = do
   let sampleFormat = F32 LittleEndian
   let sampleSpec = SampleSpec sampleFormat 48000 1
   s <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
-
-  let times = [0..48000]
-  let audio = map cMajor times
-
   simpleWrite s audio
   simpleDrain s
   simpleFree s
 
-cMajor :: Int -> Float
-cMajor time = generateChord [tone1, tone2, tone3]
-  where tone1 = generateTone (C, 5) time
-        tone2 = generateTone (E, 5) time
-        tone3 = generateTone (G, 5) time
+playChord :: IO ()
+playChord = do
+  let times = [0..48000]
+  let audio = map cMajor times
+  playAudio audio
