@@ -14,7 +14,7 @@ main = do
     ]
 
   button <- buttonNew
-  button `onClicked` playChord
+  button `onClicked` playChords
   box <- labelBox "Play Chord"
   button `containerAdd` box
   window `containerAdd` button
@@ -39,8 +39,10 @@ playAudio audio = do
   simpleDrain s
   simpleFree s
 
-playChord :: IO ()
-playChord = do
-  let times = [0..48000]
-  let audio = map cMajor times
+playChords :: IO ()
+playChords = do
+  let times = [0..24000]
+  let audio1 = map cMajor times
+  let audio2 = map fMajor times
+  let audio = audio1 ++ audio2 ++ audio1
   playAudio audio
