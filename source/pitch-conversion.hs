@@ -1,4 +1,4 @@
-module Pitch where
+module PitchConversion where
 
 type Pitch = (Note, Octave)
 data Note = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
@@ -35,10 +35,10 @@ pitchToInt (A , octave) = octave * 12 + 9
 pitchToInt (As, octave) = octave * 12 + 10
 pitchToInt (B , octave) = octave * 12 + 11
 
-scientificPitch :: Pitch -> Double
+scientificPitch :: Pitch -> Float
 scientificPitch pitch = 256.0 * (2.0 ** ((noteNumber - 48.0) / 12.0))
-  where noteNumber = fromIntegral $ pitchToInt pitch :: Double
+  where noteNumber = fromIntegral $ pitchToInt pitch :: Float
 
-standardPitch :: Pitch -> Double
+standardPitch :: Pitch -> Float
 standardPitch pitch = 440.0 * (2.0 ** ((pitchNumber - 57.0) / 12.0))
-  where pitchNumber = fromIntegral $ pitchToInt pitch :: Double
+  where pitchNumber = fromIntegral $ pitchToInt pitch :: Float
