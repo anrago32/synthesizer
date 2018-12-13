@@ -4,7 +4,6 @@ import PitchConversion
 
 generateChord :: [[Float]] -> [Float]
 generateChord [tone] = tone
-                                                    -- / 2
 generateChord (tone:tones) = map (/2) (zipWith (+) tone (generateChord tones))
 
 generateTone :: Pitch -> [Int] -> [Float]
