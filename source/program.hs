@@ -45,3 +45,4 @@ playChord = do
   let audio = generateChord [tone1, tone2, tone3]
   simpleWrite s audio
   simpleDrain s
+  simpleFree s
