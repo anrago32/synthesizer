@@ -2,17 +2,17 @@
 
 This is an audio synthesizer written in Haskell.
 
-Development is still in very early stages.
+Development is still in early stages.
 
 ## Build
 
 To build the executable:
 
-  $ ./build.sh
+    $ ./build.sh
 
 To run the program:
 
-  $ executable/program
+    $ executable/program
 
 ## Libraries
 
