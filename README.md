@@ -8,7 +8,7 @@ Development is still in very early stages.
 
 ## Audio
 
-Audio for this project is managed using the PulseAudio Haskell library.
+Audio for this project is managed using the PulseSimple Haskell library.
 
 Documentation for the library can be found [here](http://hackage.haskell.org/package/pulse-simple).
 
