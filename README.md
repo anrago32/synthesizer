@@ -12,4 +12,4 @@ Graphics for this project are created using the gtk2hs Haskell library.
 
 ## Pulse Audio
 
-Audio for this project is manages using the pulse-simple Haskell library.
+Audio for this project is managed using the pulse-simple Haskell library.
