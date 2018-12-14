@@ -16,10 +16,10 @@ fMajor time = generateChord [tone1, tone2, tone3]
 
 generateChord :: [Float] -> Float
 generateChord [tone] = tone
-generateChord (tone:tones) = (tone + generateChord tones) / 2
+generateChord (tone:tones) = (tone + generateChord tones) / 2.0
 
 generateTone :: Pitch -> Int -> Float
 generateTone pitch time = sin period
   where frequency = standardPitch pitch
-        period = fromIntegral time * frequency * pi * 2 / sampleRate
-        sampleRate = 48000
+        period = fromIntegral time * frequency * pi * 2.0 / sampleRate
+        sampleRate = 48000.0

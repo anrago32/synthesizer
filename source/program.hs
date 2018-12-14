@@ -15,7 +15,7 @@ main = do
 
   button <- buttonNew
   button `onClicked` playChords
-  box <- labelBox "Play Chord"
+  box <- labelBox "Play Chords"
   button `containerAdd` box
   window `containerAdd` button
   widgetShowAll window
