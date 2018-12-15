@@ -23,10 +23,10 @@ main = do
   mainGUI
 
 labelBox :: String -> IO HBox
-labelBox txt = do
+labelBox text = do
   box <- hBoxNew False 0
   set box [containerBorderWidth := 2]
-  label <- labelNew (Just txt)
+  label <- labelNew (Just text)
   boxPackStart box label PackNatural 3
   return box
 
