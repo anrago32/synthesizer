@@ -41,16 +41,16 @@ main = do
   menu2 <- comboBoxNewText
   button2 <- buttonNew
 
+  containerAdd row1Section1 menu1
+  containerAdd row1Section2 button1
+  containerAdd row1Section3 menu2
+  containerAdd row1Section4 button2
+
   comboBoxAppendText menu1 (pack "None")
   buttonSetLabel button1 "Save Patch"
   comboBoxAppendText menu2 (pack "Keyboard")
   comboBoxAppendText menu2 (pack "MIDI")
   buttonSetLabel button2 "Process Script"
-
-  containerAdd row1Section1 menu1
-  containerAdd row1Section2 button1
-  containerAdd row1Section3 menu2
-  containerAdd row1Section4 button2
 
   -- Second Row
   row2 <- hBoxNew True 10
@@ -107,15 +107,15 @@ main = do
   effSelector <- comboBoxNewText
   filSelector <- comboBoxNewText
 
-  comboBoxAppendText oscSelector (pack "Frequency Mod")
-  comboBoxAppendText lfoSelector (pack "None")
-  comboBoxAppendText effSelector (pack "None")
-  comboBoxAppendText filSelector (pack "None")
-
   containerAdd row3Section1 oscSelector
   containerAdd row3Section2 lfoSelector
   containerAdd row3Section3 effSelector
   containerAdd row3Section4 filSelector
+
+  comboBoxAppendText oscSelector (pack "Frequency Mod")
+  comboBoxAppendText lfoSelector (pack "None")
+  comboBoxAppendText effSelector (pack "None")
+  comboBoxAppendText filSelector (pack "None")
 
   -- Fourth Row
   row4 <- hBoxNew True 10
