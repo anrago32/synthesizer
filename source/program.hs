@@ -17,13 +17,13 @@ main = do
     ]
 
   widgetSetSizeRequest window 600 400
-  table <- tableNew 8 4 False
+  table <- tableNew 4 4 False
   containerAdd window table
 
   -- First Row
   row1 <- hBoxNew True 10
   containerSetBorderWidth row1 10
-  tableAttachDefaults table row1 0 8 0 1
+  tableAttachDefaults table row1 0 4 0 1
   widgetSetSizeRequest row1 600 0
 
   row1Section1 <- hBoxNew True 0
@@ -55,7 +55,7 @@ main = do
   -- Second Row
   row2 <- hBoxNew True 10
   containerSetBorderWidth row2 10
-  tableAttachDefaults table row2 0 8 1 2
+  tableAttachDefaults table row2 0 4 1 2
   widgetSetSizeRequest row2 600 100
 
   row2Section1 <- hBoxNew True 0
@@ -89,7 +89,7 @@ main = do
   -- Third Row
   row3 <- hBoxNew True 10
   containerSetBorderWidth row3 10
-  tableAttachDefaults table row3 0 8 2 3
+  tableAttachDefaults table row3 0 4 2 3
   widgetSetSizeRequest row3 600 0
 
   row3Section1 <- hBoxNew True 0
@@ -120,7 +120,7 @@ main = do
   -- Fourth Row
   row4 <- hBoxNew True 10
   containerSetBorderWidth row4 10
-  tableAttachDefaults table row4 0 8 3 4
+  tableAttachDefaults table row4 0 4 3 4
   widgetSetSizeRequest row4 600 100
 
   row4Section1 <- hBoxNew True 0
