@@ -8,6 +8,7 @@ import PitchConversion
 
 main :: IO ()
 main = do
+  -- Window Initialization
   initGUI
   window <- windowNew
   set window
@@ -16,103 +17,141 @@ main = do
     ]
 
   widgetSetSizeRequest window 600 400
-  table <- tableNew 8 64 False
+  table <- tableNew 8 4 False
   containerAdd window table
 
   -- First Row
   row1 <- hBoxNew True 10
   containerSetBorderWidth row1 10
   tableAttachDefaults table row1 0 8 0 1
+  widgetSetSizeRequest row1 600 0
 
+  row1Section1 <- hBoxNew True 0
+  row1Section2 <- hBoxNew True 0
+  row1Section3 <- hBoxNew True 0
+  row1Section4 <- hBoxNew True 0
+
+  containerAdd row1 row1Section1
+  containerAdd row1 row1Section2
+  containerAdd row1 row1Section3
+  containerAdd row1 row1Section4
+
+  menu1 <- comboBoxNewText
   button1 <- buttonNew
-  containerAdd row1 button1
+  menu2 <- comboBoxNewText
   button2 <- buttonNew
-  containerAdd row1 button2
-  button3 <- buttonNew
-  containerAdd row1 button3
-  button4 <- buttonNew
-  containerAdd row1 button4
+
+  comboBoxAppendText menu1 (pack "None")
+  buttonSetLabel button1 "Save Patch"
+  comboBoxAppendText menu2 (pack "Keyboard")
+  comboBoxAppendText menu2 (pack "MIDI")
+  buttonSetLabel button2 "Process Script"
+
+  containerAdd row1Section1 menu1
+  containerAdd row1Section2 button1
+  containerAdd row1Section3 menu2
+  containerAdd row1Section4 button2
 
   -- Second Row
   row2 <- hBoxNew True 10
   containerSetBorderWidth row2 10
-  tableAttachDefaults table row2 0 8 1 32
+  tableAttachDefaults table row2 0 8 1 2
+  widgetSetSizeRequest row2 600 100
 
   row2Section1 <- hBoxNew True 0
-  containerAdd row2 row2Section1
   row2Section2 <- hBoxNew True 0
-  containerAdd row2 row2Section2
   row2Section3 <- hBoxNew True 0
-  containerAdd row2 row2Section3
   row2Section4 <- hBoxNew True 0
+
+  containerAdd row2 row2Section1
+  containerAdd row2 row2Section2
+  containerAdd row2 row2Section3
   containerAdd row2 row2Section4
 
   volumeSlider <- createSlider
-  containerAdd row2Section1 volumeSlider
   pitchSlider <- createSlider
-  containerAdd row2Section1 pitchSlider
   portamentoSlider <- createSlider
-  containerAdd row2Section2 portamentoSlider
   envSlider1 <- createSlider
-  containerAdd row2Section2 envSlider1
   envSlider2 <- createSlider
-  containerAdd row2Section3 envSlider2
   envSlider3 <- createSlider
-  containerAdd row2Section3 envSlider3
   envSlider4 <- createSlider
-  containerAdd row2Section4 envSlider4
   envSlider5 <- createSlider
+
+  containerAdd row2Section1 volumeSlider
+  containerAdd row2Section1 pitchSlider
+  containerAdd row2Section2 portamentoSlider
+  containerAdd row2Section2 envSlider1
+  containerAdd row2Section3 envSlider2
+  containerAdd row2Section3 envSlider3
+  containerAdd row2Section4 envSlider4
   containerAdd row2Section4 envSlider5
 
   -- Third Row
   row3 <- hBoxNew True 10
   containerSetBorderWidth row3 10
-  tableAttachDefaults table row3 0 8 32 33
+  tableAttachDefaults table row3 0 8 2 3
+  widgetSetSizeRequest row3 600 0
+
+  row3Section1 <- hBoxNew True 0
+  row3Section2 <- hBoxNew True 0
+  row3Section3 <- hBoxNew True 0
+  row3Section4 <- hBoxNew True 0
+
+  containerAdd row3 row3Section1
+  containerAdd row3 row3Section2
+  containerAdd row3 row3Section3
+  containerAdd row3 row3Section4
 
   oscSelector <- comboBoxNewText
-  comboBoxAppendText oscSelector (pack "Frequency Mod")
-  containerAdd row3 oscSelector
   lfoSelector <- comboBoxNewText
-  comboBoxAppendText lfoSelector (pack "None")
-  containerAdd row3 lfoSelector
   effSelector <- comboBoxNewText
-  comboBoxAppendText effSelector (pack "None")
-  containerAdd row3 effSelector
   filSelector <- comboBoxNewText
+
+  comboBoxAppendText oscSelector (pack "Frequency Mod")
+  comboBoxAppendText lfoSelector (pack "None")
+  comboBoxAppendText effSelector (pack "None")
   comboBoxAppendText filSelector (pack "None")
-  containerAdd row3 filSelector
+
+  containerAdd row3Section1 oscSelector
+  containerAdd row3Section2 lfoSelector
+  containerAdd row3Section3 effSelector
+  containerAdd row3Section4 filSelector
 
   -- Fourth Row
   row4 <- hBoxNew True 10
   containerSetBorderWidth row4 10
-  tableAttachDefaults table row4 0 8 33 64
+  tableAttachDefaults table row4 0 8 3 4
+  widgetSetSizeRequest row4 600 100
 
   row4Section1 <- hBoxNew True 0
-  containerAdd row4 row4Section1
   row4Section2 <- hBoxNew True 0
-  containerAdd row4 row4Section2
   row4Section3 <- hBoxNew True 0
-  containerAdd row4 row4Section3
   row4Section4 <- hBoxNew True 0
+
+  containerAdd row4 row4Section1
+  containerAdd row4 row4Section2
+  containerAdd row4 row4Section3
   containerAdd row4 row4Section4
 
   oscSlider1 <- createSlider
-  containerAdd row4Section1 oscSlider1
   oscSlider2 <- createSlider
-  containerAdd row4Section1 oscSlider2
   lfoSlider1 <- createSlider
-  containerAdd row4Section2 lfoSlider1
   lfoSlider2 <- createSlider
-  containerAdd row4Section2 lfoSlider2
   effSlider1 <- createSlider
-  containerAdd row4Section3 effSlider1
   effSlider2 <- createSlider
-  containerAdd row4Section3 effSlider2
   filSlider1 <- createSlider
-  containerAdd row4Section4 filSlider1
   filSlider2 <- createSlider
+
+  containerAdd row4Section1 oscSlider1
+  containerAdd row4Section1 oscSlider2
+  containerAdd row4Section2 lfoSlider1
+  containerAdd row4Section2 lfoSlider2
+  containerAdd row4Section3 effSlider1
+  containerAdd row4Section3 effSlider2
+  containerAdd row4Section4 filSlider1
   containerAdd row4Section4 filSlider2
 
+  -- Window Initiation
   widgetShowAll window
   onDestroy window mainQuit
   mainGUI
