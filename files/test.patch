@@ -1,0 +1,25 @@
+volume           0
+octave           0
+portamento       0
+envelope-mod     0
+
+envelope-attack  0
+envelope-decay   0
+envelope-sustain 0
+envelope-release 0
+
+oscillator-type  frequency-mod
+oscillator-mod-1 0
+oscillator-mod-2 0
+
+filter-type      none
+filter-cutoff    0
+filter-resonance 0
+
+lfo-type         none
+lfo-depth        0
+lfo-rate         0
+
+effect-type      none
+effect-depth     0
+effect-rate      0

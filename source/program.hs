@@ -36,21 +36,22 @@ main = do
   containerAdd row1 row1Section3
   containerAdd row1 row1Section4
 
-  menu1 <- comboBoxNewText
-  button1 <- buttonNew
-  menu2 <- comboBoxNewText
-  button2 <- buttonNew
+  inputSelector <- comboBoxNewText
+  scriptButton <- buttonNew
+  loadButton <- buttonNew
+  saveButton <- buttonNew
 
-  containerAdd row1Section1 menu1
-  containerAdd row1Section2 button1
-  containerAdd row1Section3 menu2
-  containerAdd row1Section4 button2
+  containerAdd row1Section1 inputSelector
+  containerAdd row1Section2 scriptButton
+  containerAdd row1Section3 loadButton
+  containerAdd row1Section4 saveButton
 
-  comboBoxAppendText menu1 (pack "None")
-  buttonSetLabel button1 "Save Patch"
-  comboBoxAppendText menu2 (pack "Keyboard")
-  comboBoxAppendText menu2 (pack "MIDI")
-  buttonSetLabel button2 "Process Script"
+  comboBoxAppendText inputSelector $ pack "Keyboard"
+  comboBoxAppendText inputSelector $ pack "MIDI"
+  comboBoxSetActive inputSelector 0
+  buttonSetLabel scriptButton "Process Script"
+  buttonSetLabel loadButton "Load Patch"
+  buttonSetLabel saveButton "Save Patch"
 
   -- Second Row
   row2 <- hBoxNew True 10
@@ -103,19 +104,23 @@ main = do
   containerAdd row3 row3Section4
 
   oscSelector <- comboBoxNewText
+  filSelector <- comboBoxNewText
   lfoSelector <- comboBoxNewText
   effSelector <- comboBoxNewText
-  filSelector <- comboBoxNewText
 
   containerAdd row3Section1 oscSelector
+  containerAdd row3Section4 filSelector
   containerAdd row3Section2 lfoSelector
   containerAdd row3Section3 effSelector
-  containerAdd row3Section4 filSelector
 
-  comboBoxAppendText oscSelector (pack "Frequency Mod")
-  comboBoxAppendText lfoSelector (pack "None")
-  comboBoxAppendText effSelector (pack "None")
-  comboBoxAppendText filSelector (pack "None")
+  comboBoxAppendText oscSelector $ pack "Frequency Mod"
+  comboBoxSetActive oscSelector 0
+  comboBoxAppendText filSelector $ pack "None"
+  comboBoxSetActive filSelector 0
+  comboBoxAppendText lfoSelector $ pack "None"
+  comboBoxSetActive lfoSelector 0
+  comboBoxAppendText effSelector $ pack "None"
+  comboBoxSetActive effSelector 0
 
   -- Fourth Row
   row4 <- hBoxNew True 10
@@ -135,21 +140,21 @@ main = do
 
   oscSlider1 <- createSlider
   oscSlider2 <- createSlider
+  filSlider1 <- createSlider
+  filSlider2 <- createSlider
   lfoSlider1 <- createSlider
   lfoSlider2 <- createSlider
   effSlider1 <- createSlider
   effSlider2 <- createSlider
-  filSlider1 <- createSlider
-  filSlider2 <- createSlider
 
   containerAdd row4Section1 oscSlider1
   containerAdd row4Section1 oscSlider2
+  containerAdd row4Section4 filSlider1
+  containerAdd row4Section4 filSlider2
   containerAdd row4Section2 lfoSlider1
   containerAdd row4Section2 lfoSlider2
   containerAdd row4Section3 effSlider1
   containerAdd row4Section3 effSlider2
-  containerAdd row4Section4 filSlider1
-  containerAdd row4Section4 filSlider2
 
   -- Window Initiation
   widgetShowAll window
