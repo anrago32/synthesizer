@@ -24,7 +24,7 @@ main = do
   row1 <- hBoxNew True 10
   containerSetBorderWidth row1 10
   tableAttachDefaults table row1 0 4 0 1
-  widgetSetSizeRequest row1 600 0
+  widgetSetSizeRequest row1 0 0
 
   row1Section1 <- hBoxNew True 0
   row1Section2 <- hBoxNew True 0
@@ -57,7 +57,7 @@ main = do
   row2 <- hBoxNew True 10
   containerSetBorderWidth row2 10
   tableAttachDefaults table row2 0 4 1 2
-  widgetSetSizeRequest row2 600 100
+  widgetSetSizeRequest row2 0 100
 
   row2Section1 <- hBoxNew True 0
   row2Section2 <- hBoxNew True 0
@@ -69,14 +69,14 @@ main = do
   containerAdd row2 row2Section3
   containerAdd row2 row2Section4
 
-  volumeSlider <- createSlider
-  pitchSlider <- createSlider
-  portamentoSlider <- createSlider
-  envSlider1 <- createSlider
-  envSlider2 <- createSlider
-  envSlider3 <- createSlider
-  envSlider4 <- createSlider
-  envSlider5 <- createSlider
+  volumeSlider <- createSlider "VOL"
+  pitchSlider <- createSlider "OCT"
+  portamentoSlider <- createSlider "POR"
+  envSlider1 <- createSlider "ENV"
+  envSlider2 <- createSlider "A"
+  envSlider3 <- createSlider "D"
+  envSlider4 <- createSlider "S"
+  envSlider5 <- createSlider "R"
 
   containerAdd row2Section1 volumeSlider
   containerAdd row2Section1 pitchSlider
@@ -91,7 +91,7 @@ main = do
   row3 <- hBoxNew True 10
   containerSetBorderWidth row3 10
   tableAttachDefaults table row3 0 4 2 3
-  widgetSetSizeRequest row3 600 0
+  widgetSetSizeRequest row3 0 0
 
   row3Section1 <- hBoxNew True 0
   row3Section2 <- hBoxNew True 0
@@ -126,7 +126,7 @@ main = do
   row4 <- hBoxNew True 10
   containerSetBorderWidth row4 10
   tableAttachDefaults table row4 0 4 3 4
-  widgetSetSizeRequest row4 600 100
+  widgetSetSizeRequest row4 0 100
 
   row4Section1 <- hBoxNew True 0
   row4Section2 <- hBoxNew True 0
@@ -138,34 +138,40 @@ main = do
   containerAdd row4 row4Section3
   containerAdd row4 row4Section4
 
-  oscSlider1 <- createSlider
-  oscSlider2 <- createSlider
-  filSlider1 <- createSlider
-  filSlider2 <- createSlider
-  lfoSlider1 <- createSlider
-  lfoSlider2 <- createSlider
-  effSlider1 <- createSlider
-  effSlider2 <- createSlider
+  oscSlider1 <- createSlider "MOD 1"
+  oscSlider2 <- createSlider "MOD 2"
+  filSlider1 <- createSlider "CUT"
+  filSlider2 <- createSlider "RES"
+  lfoSlider1 <- createSlider "DEPTH"
+  lfoSlider2 <- createSlider "RATE"
+  effSlider1 <- createSlider "DEPTH"
+  effSlider2 <- createSlider "RATE"
 
   containerAdd row4Section1 oscSlider1
   containerAdd row4Section1 oscSlider2
-  containerAdd row4Section4 filSlider1
-  containerAdd row4Section4 filSlider2
-  containerAdd row4Section2 lfoSlider1
-  containerAdd row4Section2 lfoSlider2
-  containerAdd row4Section3 effSlider1
-  containerAdd row4Section3 effSlider2
+  containerAdd row4Section2 filSlider1
+  containerAdd row4Section2 filSlider2
+  containerAdd row4Section3 lfoSlider1
+  containerAdd row4Section3 lfoSlider2
+  containerAdd row4Section4 effSlider1
+  containerAdd row4Section4 effSlider2
 
   -- Window Initiation
   widgetShowAll window
   onDestroy window mainQuit
   mainGUI
 
-createSlider :: IO VScale
-createSlider = do
-  slider <- vScaleNewWithRange 0 99 1
-  rangeSetInverted slider True
-  scaleSetDrawValue slider False
+createSlider :: String -> IO VBox
+createSlider text = do
+  slider <- vBoxNew False 0
+  scale <- vScaleNewWithRange 0 99 1
+  rangeSetInverted scale True
+  scaleSetDrawValue scale False
+  label <- labelNew $ Just text
+  containerAdd slider scale
+  containerAdd slider label
+  widgetSetSizeRequest scale 0 100
+  widgetSetSizeRequest label 0 0
   return slider
 
 playAudio :: [Float] -> IO ()

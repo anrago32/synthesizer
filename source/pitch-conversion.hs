@@ -1,8 +1,7 @@
 module PitchConversion where
 
-type Pitch = (Note, Octave)
+type Pitch = (Note, Int)
 data Note = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
-type Octave = Int
 
 intToPitch :: Int -> Pitch
 intToPitch number
