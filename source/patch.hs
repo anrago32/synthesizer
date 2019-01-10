@@ -3,7 +3,7 @@ module Patch where
 data Patch = Patch
   { volume          :: Int
   , octave          :: Int
-  , portamento      :: Int
+  , glissando       :: Int
   , envelopeMod     :: Int
   , envelopeAttack  :: Int
   , envelopeDecay   :: Int

@@ -69,18 +69,18 @@ main = do
   containerAdd row2 row2Section3
   containerAdd row2 row2Section4
 
-  volumeSlider <- createSlider "VOL"
-  pitchSlider <- createSlider "OCT"
-  portamentoSlider <- createSlider "POR"
-  envSlider1 <- createSlider "ENV"
+  volumeSlider <- createSlider "Vol"
+  octaveSlider <- createSlider "Oct"
+  glissandoSlider <- createSlider "Gls"
+  envSlider1 <- createSlider "Env"
   envSlider2 <- createSlider "A"
   envSlider3 <- createSlider "D"
   envSlider4 <- createSlider "S"
   envSlider5 <- createSlider "R"
 
   containerAdd row2Section1 volumeSlider
-  containerAdd row2Section1 pitchSlider
-  containerAdd row2Section2 portamentoSlider
+  containerAdd row2Section1 glissandoSlider
+  containerAdd row2Section2 octaveSlider
   containerAdd row2Section2 envSlider1
   containerAdd row2Section3 envSlider2
   containerAdd row2Section3 envSlider3
@@ -138,14 +138,14 @@ main = do
   containerAdd row4 row4Section3
   containerAdd row4 row4Section4
 
-  oscSlider1 <- createSlider "MOD 1"
-  oscSlider2 <- createSlider "MOD 2"
-  filSlider1 <- createSlider "CUT"
-  filSlider2 <- createSlider "RES"
-  lfoSlider1 <- createSlider "DEPTH"
-  lfoSlider2 <- createSlider "RATE"
-  effSlider1 <- createSlider "DEPTH"
-  effSlider2 <- createSlider "RATE"
+  oscSlider1 <- createSlider "Mod"
+  oscSlider2 <- createSlider "Tex"
+  filSlider1 <- createSlider "Cut"
+  filSlider2 <- createSlider "Res"
+  lfoSlider1 <- createSlider "Depth"
+  lfoSlider2 <- createSlider "Rate"
+  effSlider1 <- createSlider "Depth"
+  effSlider2 <- createSlider "Rate"
 
   containerAdd row4Section1 oscSlider1
   containerAdd row4Section1 oscSlider2
@@ -157,6 +157,7 @@ main = do
   containerAdd row4Section4 effSlider2
 
   -- Window Initiation
+  widgetModifyBg window StateNormal (Color 65535 65535 65535)
   widgetShowAll window
   onDestroy window mainQuit
   mainGUI
