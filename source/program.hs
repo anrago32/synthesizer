@@ -4,6 +4,7 @@ import Data.Text (pack)
 import Graphics.UI.Gtk
 import Sound.Pulse.Simple
 import AudioGeneration
+import Patch
 import PitchConversion
 
 main :: IO ()
@@ -16,9 +17,11 @@ main = do
     , windowResizable := False
     ]
 
-  widgetSetSizeRequest window 600 400
   table <- tableNew 4 4 False
   containerAdd window table
+  onDestroy window mainQuit
+  widgetModifyBg window StateNormal (Color 65535 65535 65535)
+  widgetSetSizeRequest window 600 400
 
   -- First Row
   row1 <- hBoxNew True 10
@@ -54,8 +57,7 @@ main = do
   buttonSetLabel saveButton "Save Patch"
 
   -- Second Row
-  row2 <- hBoxNew True 10
-  containerSetBorderWidth row2 10
+  row2 <- hBoxNew True 0
   tableAttachDefaults table row2 0 4 1 2
   widgetSetSizeRequest row2 0 100
 
@@ -123,8 +125,7 @@ main = do
   comboBoxSetActive effSelector 0
 
   -- Fourth Row
-  row4 <- hBoxNew True 10
-  containerSetBorderWidth row4 10
+  row4 <- hBoxNew True 0
   tableAttachDefaults table row4 0 4 3 4
   widgetSetSizeRequest row4 0 100
 
@@ -157,9 +158,7 @@ main = do
   containerAdd row4Section4 effSlider2
 
   -- Window Initiation
-  widgetModifyBg window StateNormal (Color 65535 65535 65535)
   widgetShowAll window
-  onDestroy window mainQuit
   mainGUI
 
 createSlider :: String -> IO VBox
