@@ -39,9 +39,9 @@ main = do
   containerAdd row1 row1Section4
 
   inputSelector <- comboBoxNewText
-  scriptButton <- buttonNew
-  loadButton <- buttonNew
-  saveButton <- buttonNew
+  scriptButton  <- buttonNew
+  loadButton    <- buttonNew
+  saveButton    <- buttonNew
   containerAdd row1Section1 inputSelector
   containerAdd row1Section2 scriptButton
   containerAdd row1Section3 loadButton
@@ -77,8 +77,8 @@ main = do
   envSlider5 <- createSlider "R"
 
   containerAdd row2Section1 volumeSlider
-  containerAdd row2Section1 glissandoSlider
-  containerAdd row2Section2 octaveSlider
+  containerAdd row2Section1 octaveSlider
+  containerAdd row2Section2 glissandoSlider
   containerAdd row2Section2 envSlider1
   containerAdd row2Section3 envSlider2
   containerAdd row2Section3 envSlider3
@@ -167,12 +167,12 @@ main = do
 createSlider :: String -> IO VBox
 createSlider text = do
   slider <- vBoxNew False 0
-  scale <- vScaleNewWithRange 0 99 1
-  rangeSetInverted scale True
-  scaleSetDrawValue scale False
-  label <- labelNew $ Just text
+  scale  <- vScaleNewWithRange 0 100 1
+  label  <- labelNew $ Just text
   containerAdd slider scale
   containerAdd slider label
+  rangeSetInverted scale True
+  scaleSetDrawValue scale False
   widgetSetSizeRequest scale 0 100
   widgetSetSizeRequest label 0 0
   return slider
