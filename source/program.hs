@@ -20,7 +20,7 @@ main = do
   table <- tableNew 4 4 False
   containerAdd window table
   onDestroy window mainQuit
-  widgetModifyBg window StateNormal (Color 65535 65535 65535)
+  widgetModifyBg window StateNormal (Color maxBound maxBound maxBound)
   widgetSetSizeRequest window 600 400
 
   -- First Row
@@ -33,7 +33,6 @@ main = do
   row1Section2 <- hBoxNew True 0
   row1Section3 <- hBoxNew True 0
   row1Section4 <- hBoxNew True 0
-
   containerAdd row1 row1Section1
   containerAdd row1 row1Section2
   containerAdd row1 row1Section3
@@ -43,7 +42,6 @@ main = do
   scriptButton <- buttonNew
   loadButton <- buttonNew
   saveButton <- buttonNew
-
   containerAdd row1Section1 inputSelector
   containerAdd row1Section2 scriptButton
   containerAdd row1Section3 loadButton
@@ -51,7 +49,6 @@ main = do
 
   comboBoxAppendText inputSelector $ pack "Keyboard"
   comboBoxAppendText inputSelector $ pack "MIDI"
-  comboBoxSetActive inputSelector 0
   buttonSetLabel scriptButton "Process Script"
   buttonSetLabel loadButton "Load Patch"
   buttonSetLabel saveButton "Save Patch"
@@ -65,7 +62,6 @@ main = do
   row2Section2 <- hBoxNew True 0
   row2Section3 <- hBoxNew True 0
   row2Section4 <- hBoxNew True 0
-
   containerAdd row2 row2Section1
   containerAdd row2 row2Section2
   containerAdd row2 row2Section3
@@ -99,7 +95,6 @@ main = do
   row3Section2 <- hBoxNew True 0
   row3Section3 <- hBoxNew True 0
   row3Section4 <- hBoxNew True 0
-
   containerAdd row3 row3Section1
   containerAdd row3 row3Section2
   containerAdd row3 row3Section3
@@ -109,20 +104,29 @@ main = do
   filSelector <- comboBoxNewText
   lfoSelector <- comboBoxNewText
   effSelector <- comboBoxNewText
-
   containerAdd row3Section1 oscSelector
-  containerAdd row3Section4 filSelector
-  containerAdd row3Section2 lfoSelector
-  containerAdd row3Section3 effSelector
+  containerAdd row3Section2 filSelector
+  containerAdd row3Section3 lfoSelector
+  containerAdd row3Section4 effSelector
 
-  comboBoxAppendText oscSelector $ pack "Frequency Mod"
-  comboBoxSetActive oscSelector 0
-  comboBoxAppendText filSelector $ pack "None"
-  comboBoxSetActive filSelector 0
-  comboBoxAppendText lfoSelector $ pack "None"
-  comboBoxSetActive lfoSelector 0
-  comboBoxAppendText effSelector $ pack "None"
-  comboBoxSetActive effSelector 0
+  comboBoxAppendText oscSelector $ pack "AM Oscillator"
+  comboBoxAppendText oscSelector $ pack "FM Oscillator"
+  comboBoxAppendText oscSelector $ pack "Pulse Oscillator"
+  comboBoxAppendText oscSelector $ pack "Saw Oscillator"
+  comboBoxAppendText oscSelector $ pack "Sync Oscillator"
+  comboBoxAppendText filSelector $ pack "No Filter"
+  comboBoxAppendText filSelector $ pack "Band-Pass Filter"
+  comboBoxAppendText filSelector $ pack "High-Pass Filter"
+  comboBoxAppendText filSelector $ pack "Low-Pass Filter"
+  comboBoxAppendText lfoSelector $ pack "No Lfo"
+  comboBoxAppendText lfoSelector $ pack "Amplitude Lfo"
+  comboBoxAppendText lfoSelector $ pack "Filter Lfo"
+  comboBoxAppendText lfoSelector $ pack "Frequency Lfo"
+  comboBoxAppendText effSelector $ pack "No Effect"
+  comboBoxAppendText effSelector $ pack "Chorus Effect"
+  comboBoxAppendText effSelector $ pack "Delay Effect"
+  comboBoxAppendText effSelector $ pack "Distortion Effect"
+  comboBoxAppendText effSelector $ pack "Phaser Effect"
 
   -- Fourth Row
   row4 <- hBoxNew True 0
@@ -133,7 +137,6 @@ main = do
   row4Section2 <- hBoxNew True 0
   row4Section3 <- hBoxNew True 0
   row4Section4 <- hBoxNew True 0
-
   containerAdd row4 row4Section1
   containerAdd row4 row4Section2
   containerAdd row4 row4Section3
