@@ -69,16 +69,16 @@ main = do
 
   volumeSlider <- createSlider "Vol"
   octaveSlider <- createSlider "Oct"
-  glissandoSlider <- createSlider "Gls"
-  envSlider1 <- createSlider "Env"
-  envSlider2 <- createSlider "A"
-  envSlider3 <- createSlider "D"
-  envSlider4 <- createSlider "S"
-  envSlider5 <- createSlider "R"
+  glissSlider  <- createSlider "Gls"
+  envSlider1   <- createSlider "Env"
+  envSlider2   <- createSlider "A"
+  envSlider3   <- createSlider "D"
+  envSlider4   <- createSlider "S"
+  envSlider5   <- createSlider "R"
 
   containerAdd row2Section1 volumeSlider
   containerAdd row2Section1 octaveSlider
-  containerAdd row2Section2 glissandoSlider
+  containerAdd row2Section2 glissSlider
   containerAdd row2Section2 envSlider1
   containerAdd row2Section3 envSlider2
   containerAdd row2Section3 envSlider3
