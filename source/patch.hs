@@ -23,7 +23,7 @@ data Patch = Patch
   , effectRate      :: Int
   } deriving (Read, Show)
 
-loadPatch :: String -> IO Patch
+loadPatch :: String -> IO ()
 loadPatch file = do
   contents <- readFile file
   let patch = read contents

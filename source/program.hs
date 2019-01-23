@@ -47,8 +47,8 @@ main = do
   containerAdd row1Section3 loadButton
   containerAdd row1Section4 saveButton
 
-  comboBoxAppendText inputSelector $ pack "Keyboard"
-  comboBoxAppendText inputSelector $ pack "MIDI"
+  comboBoxAppendText inputSelector $ pack "Keyboard Input"
+  comboBoxAppendText inputSelector $ pack "MIDI Input"
   buttonSetLabel scriptButton "Process Script"
   buttonSetLabel loadButton "Load Patch"
   buttonSetLabel saveButton "Save Patch"
