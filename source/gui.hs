@@ -6,30 +6,30 @@ import Graphics.UI.Gtk
 data ElementSize = Large | Small
 
 data Gui = Gui
-  { loadButton       :: Button
+  { scriptButton     :: Button
+  , loadButton       :: Button
   , saveButton       :: Button
-  , scriptButton     :: Button
-  , effectCombo      :: ComboBox
-  , filterCombo      :: ComboBox
   , inputCombo       :: ComboBox
-  , lfoCombo         :: ComboBox
   , oscillatorCombo  :: ComboBox
-  , attackScale      :: VScale
-  , cutoffScale      :: VScale
-  , decayScale       :: VScale
-  , effectDepthScale :: VScale
-  , effectRateScale  :: VScale
-  , envelopeScale    :: VScale
+  , filterCombo      :: ComboBox
+  , lfoCombo         :: ComboBox
+  , effectCombo      :: ComboBox
+  , volumeScale      :: VScale
+  , octaveScale      :: VScale
   , glissandoScale   :: VScale
+  , envelopeScale    :: VScale
+  , attackScale      :: VScale
+  , decayScale       :: VScale
+  , sustainScale     :: VScale
+  , releaseScale     :: VScale
+  , modulationScale  :: VScale
+  , textureScale     :: VScale
+  , cutoffScale      :: VScale
+  , resonanceScale   :: VScale
   , lfoDepthScale    :: VScale
   , lfoRateScale     :: VScale
-  , modulationScale  :: VScale
-  , octaveScale      :: VScale
-  , releaseScale     :: VScale
-  , resonanceScale   :: VScale
-  , sustainScale     :: VScale
-  , textureScale     :: VScale
-  , volumeScale      :: VScale
+  , effectDepthScale :: VScale
+  , effectRateScale  :: VScale
   }
 
 createGui :: IO Gui
@@ -154,32 +154,9 @@ createGui = do
   -- Window Initiation
   widgetShowAll mainWindow
 
-  return Gui
-    { loadButton       = button2
-    , saveButton       = button3
-    , scriptButton     = button1
-    , effectCombo      = combo5
-    , filterCombo      = combo3
-    , inputCombo       = combo1
-    , lfoCombo         = combo4
-    , oscillatorCombo  = combo2
-    , attackScale      = scale5
-    , cutoffScale      = scale11
-    , decayScale       = scale6
-    , effectDepthScale = scale15
-    , effectRateScale  = scale16
-    , envelopeScale    = scale4
-    , glissandoScale   = scale3
-    , lfoDepthScale    = scale13
-    , lfoRateScale     = scale14
-    , modulationScale  = scale9
-    , octaveScale      = scale2
-    , releaseScale     = scale8
-    , resonanceScale   = scale12
-    , sustainScale     = scale7
-    , textureScale     = scale10
-    , volumeScale      = scale1
-    }
+  return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5
+    scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
+    scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
 
 addLabelScale :: HBox -> VScale -> String -> IO ()
 addLabelScale section scale text = do
