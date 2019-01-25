@@ -10,13 +10,7 @@ import Pitch
 main :: IO ()
 main = do
   initGUI
-  window <- windowNew
-  set window
-    [ windowTitle := "Synthesizer"
-    , windowResizable := False
-    ]
-  gui <- createGui window
-  widgetShowAll window
+  gui <- createGui
   mainGUI
 
 playAudio :: [Float] -> IO ()

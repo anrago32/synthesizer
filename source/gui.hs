@@ -3,6 +3,9 @@ module Gui where
 import Data.Text (pack)
 import Graphics.UI.Gtk
 
+data ElementSize = Large | Small
+  deriving (Eq)
+
 data Gui = Gui
   { loadButton       :: Button
   , saveButton       :: Button
@@ -30,28 +33,21 @@ data Gui = Gui
   , volumeScale      :: VScale
   }
 
-createGui :: Window -> IO Gui
-createGui window = do
+createGui :: IO Gui
+createGui = do
+  -- Window Initialization
+  mainWindow <- createWindow "Synthesizer"
+  onDestroy mainWindow mainQuit
   table <- tableNew 4 4 False
-  containerAdd window table
-  onDestroy window mainQuit
-  widgetModifyBg window StateNormal (Color maxBound maxBound maxBound)
-  widgetSetSizeRequest window 600 400
+  containerAdd mainWindow table
 
   -- First Row
-  row1 <- hBoxNew True 10
-  containerSetBorderWidth row1 10
+  row1 <- createRow Small
   tableAttachDefaults table row1 0 4 0 1
-  widgetSetSizeRequest row1 0 0
-
-  row1Section1 <- hBoxNew True 0
-  row1Section2 <- hBoxNew True 0
-  row1Section3 <- hBoxNew True 0
-  row1Section4 <- hBoxNew True 0
-  containerAdd row1 row1Section1
-  containerAdd row1 row1Section2
-  containerAdd row1 row1Section3
-  containerAdd row1 row1Section4
+  row1Section1 <- newSection row1
+  row1Section2 <- newSection row1
+  row1Section3 <- newSection row1
+  row1Section4 <- newSection row1
 
   combo1  <- comboBoxNewText
   button1 <- buttonNew
@@ -69,18 +65,12 @@ createGui window = do
   buttonSetLabel button3 "Save Patch"
 
   -- Second Row
-  row2 <- hBoxNew True 0
+  row2 <- createRow Large
   tableAttachDefaults table row2 0 4 1 2
-  widgetSetSizeRequest row2 0 100
-
-  row2Section1 <- hBoxNew True 0
-  row2Section2 <- hBoxNew True 0
-  row2Section3 <- hBoxNew True 0
-  row2Section4 <- hBoxNew True 0
-  containerAdd row2 row2Section1
-  containerAdd row2 row2Section2
-  containerAdd row2 row2Section3
-  containerAdd row2 row2Section4
+  row2Section1 <- newSection row2
+  row2Section2 <- newSection row2
+  row2Section3 <- newSection row2
+  row2Section4 <- newSection row2
 
   scale1 <- vScaleNewWithRange 0 100 1
   scale2 <- vScaleNewWithRange 0 100 1
@@ -91,38 +81,22 @@ createGui window = do
   scale7 <- vScaleNewWithRange 0 100 1
   scale8 <- vScaleNewWithRange 0 100 1
 
-  slider1 <- createSlider scale1 "Vol"
-  slider2 <- createSlider scale2 "Oct"
-  slider3 <- createSlider scale3 "Gls"
-  slider4 <- createSlider scale4 "Env"
-  slider5 <- createSlider scale5 "A"
-  slider6 <- createSlider scale6 "D"
-  slider7 <- createSlider scale7 "S"
-  slider8 <- createSlider scale8 "R"
-
-  containerAdd row2Section1 slider1
-  containerAdd row2Section1 slider2
-  containerAdd row2Section2 slider3
-  containerAdd row2Section2 slider4
-  containerAdd row2Section3 slider5
-  containerAdd row2Section3 slider6
-  containerAdd row2Section4 slider7
-  containerAdd row2Section4 slider8
+  addLabelScale row2Section1 scale1 "Vol"
+  addLabelScale row2Section1 scale2 "Oct"
+  addLabelScale row2Section2 scale3 "Gls"
+  addLabelScale row2Section2 scale4 "Env"
+  addLabelScale row2Section3 scale5 "A"
+  addLabelScale row2Section3 scale6 "D"
+  addLabelScale row2Section4 scale7 "S"
+  addLabelScale row2Section4 scale8 "R"
 
   -- Third Row
-  row3 <- hBoxNew True 10
-  containerSetBorderWidth row3 10
+  row3 <- createRow Small
   tableAttachDefaults table row3 0 4 2 3
-  widgetSetSizeRequest row3 0 0
-
-  row3Section1 <- hBoxNew True 0
-  row3Section2 <- hBoxNew True 0
-  row3Section3 <- hBoxNew True 0
-  row3Section4 <- hBoxNew True 0
-  containerAdd row3 row3Section1
-  containerAdd row3 row3Section2
-  containerAdd row3 row3Section3
-  containerAdd row3 row3Section4
+  row3Section1 <- newSection row3
+  row3Section2 <- newSection row3
+  row3Section3 <- newSection row3
+  row3Section4 <- newSection row3
 
   combo2 <- comboBoxNewText
   combo3 <- comboBoxNewText
@@ -153,18 +127,12 @@ createGui window = do
   comboBoxAppendText combo5 $ pack "Phaser Effect"
 
   -- Fourth Row
-  row4 <- hBoxNew True 0
+  row4 <- createRow Large
   tableAttachDefaults table row4 0 4 3 4
-  widgetSetSizeRequest row4 0 100
-
-  row4Section1 <- hBoxNew True 0
-  row4Section2 <- hBoxNew True 0
-  row4Section3 <- hBoxNew True 0
-  row4Section4 <- hBoxNew True 0
-  containerAdd row4 row4Section1
-  containerAdd row4 row4Section2
-  containerAdd row4 row4Section3
-  containerAdd row4 row4Section4
+  row4Section1 <- newSection row4
+  row4Section2 <- newSection row4
+  row4Section3 <- newSection row4
+  row4Section4 <- newSection row4
 
   scale9  <- vScaleNewWithRange 0 100 1
   scale10 <- vScaleNewWithRange 0 100 1
@@ -175,23 +143,17 @@ createGui window = do
   scale15 <- vScaleNewWithRange 0 100 1
   scale16 <- vScaleNewWithRange 0 100 1
 
-  slider9  <- createSlider scale9  "Mod"
-  slider10 <- createSlider scale10 "Tex"
-  slider11 <- createSlider scale11 "Cut"
-  slider12 <- createSlider scale12 "Res"
-  slider13 <- createSlider scale13 "Depth"
-  slider14 <- createSlider scale14 "Rate"
-  slider15 <- createSlider scale15 "Depth"
-  slider16 <- createSlider scale16 "Rate"
+  addLabelScale row4Section1 scale9  "Mod"
+  addLabelScale row4Section1 scale10 "Tex"
+  addLabelScale row4Section2 scale11 "Cut"
+  addLabelScale row4Section2 scale12 "Res"
+  addLabelScale row4Section3 scale13 "Depth"
+  addLabelScale row4Section3 scale14 "Rate"
+  addLabelScale row4Section4 scale15 "Depth"
+  addLabelScale row4Section4 scale16 "Rate"
 
-  containerAdd row4Section1 slider9
-  containerAdd row4Section1 slider10
-  containerAdd row4Section2 slider11
-  containerAdd row4Section2 slider12
-  containerAdd row4Section3 slider13
-  containerAdd row4Section3 slider14
-  containerAdd row4Section4 slider15
-  containerAdd row4Section4 slider16
+  -- Window Initiation
+  widgetShowAll mainWindow
 
   return Gui
     { loadButton       = button2
@@ -220,8 +182,8 @@ createGui window = do
     , volumeScale      = scale16
     }
 
-createSlider :: VScale -> String -> IO VBox
-createSlider scale text = do
+addLabelScale :: HBox -> VScale -> String -> IO ()
+addLabelScale section scale text = do
   slider <- vBoxNew False 0
   label  <- labelNew $ Just text
   containerAdd slider scale
@@ -230,4 +192,32 @@ createSlider scale text = do
   scaleSetDrawValue scale False
   widgetSetSizeRequest scale 0 100
   widgetSetSizeRequest label 0 0
-  return slider
+  containerAdd section slider
+
+createRow :: ElementSize -> IO HBox
+createRow Large = do
+  row <- hBoxNew True 10
+  widgetSetSizeRequest row 0 100
+  return row
+createRow Small = do
+  row <- hBoxNew True 10
+  containerSetBorderWidth row 10
+  widgetSetSizeRequest row 0 0
+  return row
+
+createWindow :: String -> IO Window
+createWindow title = do
+  window <- windowNew
+  set window
+    [ windowTitle := "Synthesizer"
+    , windowResizable := False
+    ]
+  widgetModifyBg window StateNormal $ Color maxBound maxBound maxBound
+  widgetSetSizeRequest window 600 400
+  return window
+
+newSection :: HBox -> IO HBox
+newSection row = do
+  section <- hBoxNew True 0
+  containerAdd row section
+  return section
