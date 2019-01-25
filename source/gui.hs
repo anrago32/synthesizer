@@ -48,17 +48,13 @@ createGui = do
   row1Section3 <- newSection row1
   row1Section4 <- newSection row1
 
-  combo1  <- comboBoxNewText
-  button1 <- buttonNew
-  button2 <- buttonNew
-  button3 <- buttonNew
-  containerAdd row1Section1 combo1
-  containerAdd row1Section2 button1
-  containerAdd row1Section3 button2
-  containerAdd row1Section4 button3
+  combo1  <- newCombo row1Section1
+  button1 <- newButton row1Section2
+  button2 <- newButton row1Section3
+  button3 <- newButton row1Section4
 
-  comboBoxAppendText combo1 $ pack "Keyboard Input"
-  comboBoxAppendText combo1 $ pack "MIDI Input"
+  addComboEntry combo1 "Keyboard Input"
+  addComboEntry combo1 "MIDI Input"
   buttonSetLabel button1 "Process Script"
   buttonSetLabel button2 "Load Patch"
   buttonSetLabel button3 "Save Patch"
@@ -97,33 +93,29 @@ createGui = do
   row3Section3 <- newSection row3
   row3Section4 <- newSection row3
 
-  combo2 <- comboBoxNewText
-  combo3 <- comboBoxNewText
-  combo4 <- comboBoxNewText
-  combo5 <- comboBoxNewText
-  containerAdd row3Section1 combo2
-  containerAdd row3Section2 combo3
-  containerAdd row3Section3 combo4
-  containerAdd row3Section4 combo5
+  combo2 <- newCombo row3Section1
+  combo3 <- newCombo row3Section2
+  combo4 <- newCombo row3Section3
+  combo5 <- newCombo row3Section4
 
-  comboBoxAppendText combo2 $ pack "AM Oscillator"
-  comboBoxAppendText combo2 $ pack "FM Oscillator"
-  comboBoxAppendText combo2 $ pack "Pulse Oscillator"
-  comboBoxAppendText combo2 $ pack "Saw Oscillator"
-  comboBoxAppendText combo2 $ pack "Sync Oscillator"
-  comboBoxAppendText combo3 $ pack "No Filter"
-  comboBoxAppendText combo3 $ pack "Band-Pass Filter"
-  comboBoxAppendText combo3 $ pack "High-Pass Filter"
-  comboBoxAppendText combo3 $ pack "Low-Pass Filter"
-  comboBoxAppendText combo4 $ pack "No Lfo"
-  comboBoxAppendText combo4 $ pack "Amplitude Lfo"
-  comboBoxAppendText combo4 $ pack "Filter Lfo"
-  comboBoxAppendText combo4 $ pack "Frequency Lfo"
-  comboBoxAppendText combo5 $ pack "No Effect"
-  comboBoxAppendText combo5 $ pack "Chorus Effect"
-  comboBoxAppendText combo5 $ pack "Delay Effect"
-  comboBoxAppendText combo5 $ pack "Distortion Effect"
-  comboBoxAppendText combo5 $ pack "Phaser Effect"
+  addComboEntry combo2 "AM Oscillator"
+  addComboEntry combo2 "FM Oscillator"
+  addComboEntry combo2 "Pulse Oscillator"
+  addComboEntry combo2 "Saw Oscillator"
+  addComboEntry combo2 "Sync Oscillator"
+  addComboEntry combo3 "No Filter"
+  addComboEntry combo3 "Band-Pass Filter"
+  addComboEntry combo3 "High-Pass Filter"
+  addComboEntry combo3 "Low-Pass Filter"
+  addComboEntry combo4 "No Lfo"
+  addComboEntry combo4 "Amplitude Lfo"
+  addComboEntry combo4 "Filter Lfo"
+  addComboEntry combo4 "Frequency Lfo"
+  addComboEntry combo5 "No Effect"
+  addComboEntry combo5 "Chorus Effect"
+  addComboEntry combo5 "Delay Effect"
+  addComboEntry combo5 "Distortion Effect"
+  addComboEntry combo5 "Phaser Effect"
 
   -- Fourth Row
   row4 <- createRow Large
@@ -155,6 +147,9 @@ createGui = do
   return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5
     scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
     scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
+
+addComboEntry :: ComboBox -> String -> IO ()
+addComboEntry combo text = comboBoxAppendText combo . pack $ text
 
 addLabelScale :: HBox -> VScale -> String -> IO ()
 addLabelScale section scale text = do
@@ -189,6 +184,18 @@ createWindow title = do
   widgetModifyBg window StateNormal $ Color maxBound maxBound maxBound
   widgetSetSizeRequest window 600 400
   return window
+
+newButton :: HBox -> IO Button
+newButton section = do
+  button <- buttonNew
+  conatinerAdd section button
+  return button
+
+newCombo :: HBox -> IO ComboBox
+newCombo section = do
+  combo <- comboBoxNewText
+  conatinerAdd section combo
+  return combo
 
 newSection :: HBox -> IO HBox
 newSection row = do
