@@ -34,7 +34,7 @@ data Gui = Gui
 
 createGui :: IO Gui
 createGui = do
-  -- Window Initialization
+  -- Window Creation
   mainWindow <- createWindow "Synthesizer"
   onDestroy mainWindow mainQuit
   table <- tableNew 4 4 False
@@ -151,9 +151,7 @@ createGui = do
   addLabelScale row4Section4 scale15 "Depth"
   addLabelScale row4Section4 scale16 "Rate"
 
-  -- Window Initiation
   widgetShowAll mainWindow
-
   return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5
     scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
     scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
