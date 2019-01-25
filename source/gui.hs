@@ -148,8 +148,8 @@ createGui = do
     scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
     scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
 
-addComboEntry :: ComboBox -> String -> IO ()
-addComboEntry combo text = comboBoxAppendText combo . pack $ text
+addComboEntry :: ComboBox -> String -> IO Int
+addComboEntry combo text = comboBoxAppendText combo $ pack text
 
 addLabelScale :: HBox -> VScale -> String -> IO ()
 addLabelScale section scale text = do
@@ -188,13 +188,13 @@ createWindow title = do
 newButton :: HBox -> IO Button
 newButton section = do
   button <- buttonNew
-  conatinerAdd section button
+  containerAdd section button
   return button
 
 newCombo :: HBox -> IO ComboBox
 newCombo section = do
   combo <- comboBoxNewText
-  conatinerAdd section combo
+  containerAdd section combo
   return combo
 
 newSection :: HBox -> IO HBox
