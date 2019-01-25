@@ -4,7 +4,6 @@ import Data.Text (pack)
 import Graphics.UI.Gtk
 
 data ElementSize = Large | Small
-  deriving (Eq)
 
 data Gui = Gui
   { loadButton       :: Button
