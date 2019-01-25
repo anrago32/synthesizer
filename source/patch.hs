@@ -1,26 +1,26 @@
 module Patch where
 
 data Patch = Patch
-  { volume          :: Int
-  , octave          :: Int
-  , glissando       :: Int
-  , envelopeMod     :: Int
-  , envelopeAttack  :: Int
-  , envelopeDecay   :: Int
-  , envelopeSustain :: Int
-  , envelopeRelease :: Int
-  , oscillatorType  :: String
-  , oscillatorMod1  :: Int
-  , oscillatorMod2  :: Int
-  , filterType      :: String
-  , filterCutoff    :: Int
-  , filterResonance :: Int
-  , lfoType         :: String
-  , lfoDepth        :: Int
-  , lfoRate         :: Int
-  , effectType      :: String
-  , effectDepth     :: Int
-  , effectRate      :: Int
+  { effect     :: String
+  , filter     :: String
+  , lfo        :: String
+  , oscillator :: String
+  , attack     :: Double
+  , cutoff     :: Double
+  , decay      :: Double
+  , effDepth   :: Double
+  , effRate    :: Double
+  , envelope   :: Double
+  , glissando  :: Double
+  , lfoDepth   :: Double
+  , lfoRate    :: Double
+  , modulation :: Double
+  , octave     :: Double
+  , release    :: Double
+  , resonance  :: Double
+  , sustain    :: Double
+  , texture    :: Double
+  , volume     :: Double
   } deriving (Read, Show)
 
 loadPatch :: String -> IO ()

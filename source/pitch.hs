@@ -1,4 +1,4 @@
-module PitchConversion where
+module Pitch where
 
 type Pitch = (Note, Int)
 data Note = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B

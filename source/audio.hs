@@ -1,6 +1,6 @@
-module AudioGeneration where
+module Audio where
 
-import PitchConversion
+import Pitch
 
 {-
 cMajor :: Int -> Float
