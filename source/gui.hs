@@ -48,7 +48,7 @@ createGui = do
   row1Section3 <- newSection row1
   row1Section4 <- newSection row1
 
-  combo1  <- newCombo row1Section1
+  combo1 <- newCombo row1Section1
   button1 <- newButton row1Section2
   button2 <- newButton row1Section3
   button3 <- newButton row1Section4
@@ -125,7 +125,7 @@ createGui = do
   row4Section3 <- newSection row4
   row4Section4 <- newSection row4
 
-  scale9  <- vScaleNewWithRange 0 100 1
+  scale9 <- vScaleNewWithRange 0 100 1
   scale10 <- vScaleNewWithRange 0 100 1
   scale11 <- vScaleNewWithRange 0 100 1
   scale12 <- vScaleNewWithRange 0 100 1
@@ -154,7 +154,7 @@ addComboEntry combo text = comboBoxAppendText combo $ pack text
 addLabelScale :: HBox -> VScale -> String -> IO ()
 addLabelScale section scale text = do
   slider <- vBoxNew False 0
-  label  <- labelNew $ Just text
+  label <- labelNew $ Just text
   containerAdd slider scale
   containerAdd slider label
   rangeSetInverted scale True
