@@ -1,7 +1,9 @@
 module Gui where
 
+import Data.Maybe (fromMaybe)
 import Data.Text (pack)
 import Graphics.UI.Gtk
+import Patch
 
 data ElementSize = Large | Small
 
@@ -58,6 +60,7 @@ createGui = do
   buttonSetLabel button1 "Process Script"
   buttonSetLabel button2 "Load Patch"
   buttonSetLabel button3 "Save Patch"
+  comboBoxSetActive combo1 0
 
   -- Second Row
   row2 <- createRow Large
@@ -147,6 +150,69 @@ createGui = do
   return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5
     scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
     scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
+
+loadPatch :: Gui -> IO ()
+loadPatch gui = do
+  fileChooser <- fileChooserWidgetNew FileChooserActionOpen
+  filePath <- fileChooserGetFilename fileChooser
+  let file = fromMaybe "/home/anrago/Code/synthesizer/files/default.patch" filePath
+  patch <- read <$> readFile file
+  setPatch gui patch
+
+savePatch :: Gui -> IO ()
+savePatch gui = do
+  fileChooser <- fileChooserWidgetNew FileChooserActionSave
+  filePath <- fileChooserGetFilename fileChooser
+  let file = fromMaybe "/home/anrago/Code/synthesizer/files/default.patch" filePath
+  patch <- getPatch gui
+  writeFile file $ show patch
+
+getPatch :: Gui -> IO Patch
+getPatch gui =
+  (comboBoxGetActive $ oscillatorCombo  gui) >>= \a ->
+  (comboBoxGetActive $ filterCombo      gui) >>= \b ->
+  (comboBoxGetActive $ lfoCombo         gui) >>= \c ->
+  (comboBoxGetActive $ effectCombo      gui) >>= \d ->
+  (rangeGetValue     $ volumeScale      gui) >>= \e ->
+  (rangeGetValue     $ octaveScale      gui) >>= \f ->
+  (rangeGetValue     $ glissandoScale   gui) >>= \g ->
+  (rangeGetValue     $ envelopeScale    gui) >>= \h ->
+  (rangeGetValue     $ attackScale      gui) >>= \i ->
+  (rangeGetValue     $ decayScale       gui) >>= \j ->
+  (rangeGetValue     $ sustainScale     gui) >>= \k ->
+  (rangeGetValue     $ releaseScale     gui) >>= \l ->
+  (rangeGetValue     $ modulationScale  gui) >>= \m ->
+  (rangeGetValue     $ textureScale     gui) >>= \n ->
+  (rangeGetValue     $ cutoffScale      gui) >>= \o ->
+  (rangeGetValue     $ resonanceScale   gui) >>= \p ->
+  (rangeGetValue     $ lfoDepthScale    gui) >>= \q ->
+  (rangeGetValue     $ lfoRateScale     gui) >>= \r ->
+  (rangeGetValue     $ effectDepthScale gui) >>= \s ->
+  (rangeGetValue     $ effectRateScale  gui) >>= \t ->
+  return $ Patch a b c d e f g h i j k l m n o p q r s t
+
+setPatch :: Gui -> Patch -> IO ()
+setPatch gui patch = do
+  comboBoxSetActive (oscillatorCombo  gui) (oscillatorType patch)
+  comboBoxSetActive (filterCombo      gui) (filterType     patch)
+  comboBoxSetActive (lfoCombo         gui) (lfoType        patch)
+  comboBoxSetActive (effectCombo      gui) (effectType     patch)
+  rangeSetValue     (volumeScale      gui) (volume         patch)
+  rangeSetValue     (octaveScale      gui) (octave         patch)
+  rangeSetValue     (glissandoScale   gui) (glissando      patch)
+  rangeSetValue     (envelopeScale    gui) (envelope       patch)
+  rangeSetValue     (attackScale      gui) (attack         patch)
+  rangeSetValue     (decayScale       gui) (decay          patch)
+  rangeSetValue     (sustainScale     gui) (sustain        patch)
+  rangeSetValue     (releaseScale     gui) (release        patch)
+  rangeSetValue     (modulationScale  gui) (modulation     patch)
+  rangeSetValue     (textureScale     gui) (texture        patch)
+  rangeSetValue     (cutoffScale      gui) (cutoff         patch)
+  rangeSetValue     (resonanceScale   gui) (resonance      patch)
+  rangeSetValue     (lfoDepthScale    gui) (lfoDepth       patch)
+  rangeSetValue     (lfoRateScale     gui) (lfoRate        patch)
+  rangeSetValue     (effectDepthScale gui) (effectDepth    patch)
+  rangeSetValue     (effectRateScale  gui) (effectRate     patch)
 
 addComboEntry :: ComboBox -> String -> IO Int
 addComboEntry combo text = comboBoxAppendText combo $ pack text

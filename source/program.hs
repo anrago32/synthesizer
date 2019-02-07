@@ -11,6 +11,14 @@ main :: IO ()
 main = do
   initGUI
   gui <- createGui
+  let path = "/home/anrago/Code/synthesizer/files/default.patch"
+  patch <- read <$> readFile path
+  setPatch gui patch
+  ------------------------------------------------------------------------------
+  -- Testing
+  onClicked (loadButton gui) (loadPatch gui)
+  onClicked (saveButton gui) (savePatch gui)
+  ------------------------------------------------------------------------------
   mainGUI
 
 playAudio :: [Float] -> IO ()
@@ -19,11 +27,11 @@ playAudio audio = do
   let sampleSpec = SampleSpec sampleFormat 48000 1
   s <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
   simpleWrite s audio
-  simpleDrain s
   simpleFree s
 
 playNote :: IO ()
+
 playNote = do
   let times = [0..48000 * 2]
-  let audio = map finalOutput times
+  let audio = finalOutput <$> times
   playAudio audio

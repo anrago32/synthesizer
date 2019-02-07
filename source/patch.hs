@@ -1,35 +1,48 @@
 module Patch where
 
 data Patch = Patch
-  { effect     :: String
-  , filter     :: String
-  , lfo        :: String
-  , oscillator :: String
-  , attack     :: Double
-  , cutoff     :: Double
-  , decay      :: Double
-  , effDepth   :: Double
-  , effRate    :: Double
-  , envelope   :: Double
-  , glissando  :: Double
-  , lfoDepth   :: Double
-  , lfoRate    :: Double
-  , modulation :: Double
-  , octave     :: Double
-  , release    :: Double
-  , resonance  :: Double
-  , sustain    :: Double
-  , texture    :: Double
-  , volume     :: Double
-  } deriving (Read, Show)
+  { oscillatorType :: Int
+  , filterType     :: Int
+  , lfoType        :: Int
+  , effectType     :: Int
+  , volume         :: Double
+  , octave         :: Double
+  , glissando      :: Double
+  , envelope       :: Double
+  , attack         :: Double
+  , decay          :: Double
+  , sustain        :: Double
+  , release        :: Double
+  , modulation     :: Double
+  , texture        :: Double
+  , cutoff         :: Double
+  , resonance      :: Double
+  , lfoDepth       :: Double
+  , lfoRate        :: Double
+  , effectDepth    :: Double
+  , effectRate     :: Double
+  } deriving (Read)
 
-loadPatch :: String -> IO ()
-loadPatch file = do
-  contents <- readFile file
-  let patch = read contents
-  return patch
-
-savePatch :: String -> Patch -> IO ()
-savePatch file patch = do
-  let contents = show patch
-  writeFile file contents
+instance Show Patch where
+  show patch = "Patch\n"
+    ++ "  { oscillatorType = " ++ show (oscillatorType patch) ++ "\n"
+    ++ "  , filterType     = " ++ show (filterType     patch) ++ "\n"
+    ++ "  , lfoType        = " ++ show (lfoType        patch) ++ "\n"
+    ++ "  , effectType     = " ++ show (effectType     patch) ++ "\n"
+    ++ "  , volume         = " ++ show (volume         patch) ++ "\n"
+    ++ "  , octave         = " ++ show (octave         patch) ++ "\n"
+    ++ "  , glissando      = " ++ show (glissando      patch) ++ "\n"
+    ++ "  , envelope       = " ++ show (envelope       patch) ++ "\n"
+    ++ "  , attack         = " ++ show (attack         patch) ++ "\n"
+    ++ "  , decay          = " ++ show (decay          patch) ++ "\n"
+    ++ "  , sustain        = " ++ show (sustain        patch) ++ "\n"
+    ++ "  , release        = " ++ show (release        patch) ++ "\n"
+    ++ "  , modulation     = " ++ show (modulation     patch) ++ "\n"
+    ++ "  , texture        = " ++ show (texture        patch) ++ "\n"
+    ++ "  , cutoff         = " ++ show (cutoff         patch) ++ "\n"
+    ++ "  , resonance      = " ++ show (resonance      patch) ++ "\n"
+    ++ "  , lfoDepth       = " ++ show (lfoDepth       patch) ++ "\n"
+    ++ "  , lfoRate        = " ++ show (lfoRate        patch) ++ "\n"
+    ++ "  , effectDepth    = " ++ show (effectDepth    patch) ++ "\n"
+    ++ "  , effectRate     = " ++ show (effectRate     patch) ++ "\n"
+    ++ "  }\n"
