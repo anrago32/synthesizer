@@ -153,17 +153,15 @@ createGui = do
 
 loadPatch :: Gui -> IO ()
 loadPatch gui = do
-  fileChooser <- fileChooserWidgetNew FileChooserActionOpen
-  filePath <- fileChooserGetFilename fileChooser
-  let file = fromMaybe "/home/anrago/Code/synthesizer/files/default.patch" filePath
+  loadWindow <- createWindow "Load Patch"
+  let file = "/home/anrago/Code/synthesizer/files/default.patch"
   patch <- read <$> readFile file
   setPatch gui patch
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
-  fileChooser <- fileChooserWidgetNew FileChooserActionSave
-  filePath <- fileChooserGetFilename fileChooser
-  let file = fromMaybe "/home/anrago/Code/synthesizer/files/default.patch" filePath
+  saveWindow <- createWindow "Save Patch"
+  let file = "/home/anrago/Code/synthesizer/files/default.patch"
   patch <- getPatch gui
   writeFile file $ show patch
 
@@ -244,7 +242,7 @@ createWindow :: String -> IO Window
 createWindow title = do
   window <- windowNew
   set window
-    [ windowTitle := "Synthesizer"
+    [ windowTitle := title
     , windowResizable := False
     ]
   widgetModifyBg window StateNormal $ Color maxBound maxBound maxBound

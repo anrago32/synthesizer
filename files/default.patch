@@ -3,7 +3,7 @@ Patch
   , filterType     = 0
   , lfoType        = 0
   , effectType     = 0
-  , volume         = 41.9047619047619
+  , volume         = 0.0
   , octave         = 0.0
   , glissando      = 0.0
   , envelope       = 0.0
