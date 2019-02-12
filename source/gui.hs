@@ -153,40 +153,42 @@ createGui = do
 
 loadPatch :: Gui -> IO ()
 loadPatch gui = do
-  loadWindow <- createWindow "Load Patch"
+  loadWindow <- windowNew
   let file = "/home/anrago/Code/synthesizer/files/default.patch"
   patch <- read <$> readFile file
   setPatch gui patch
+  widgetShowAll loadWindow
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
-  saveWindow <- createWindow "Save Patch"
+  saveWindow <- windowNew
   let file = "/home/anrago/Code/synthesizer/files/default.patch"
   patch <- getPatch gui
   writeFile file $ show patch
+  widgetShowAll saveWindow
 
 getPatch :: Gui -> IO Patch
-getPatch gui =
-  (comboBoxGetActive $ oscillatorCombo  gui) >>= \a ->
-  (comboBoxGetActive $ filterCombo      gui) >>= \b ->
-  (comboBoxGetActive $ lfoCombo         gui) >>= \c ->
-  (comboBoxGetActive $ effectCombo      gui) >>= \d ->
-  (rangeGetValue     $ volumeScale      gui) >>= \e ->
-  (rangeGetValue     $ octaveScale      gui) >>= \f ->
-  (rangeGetValue     $ glissandoScale   gui) >>= \g ->
-  (rangeGetValue     $ envelopeScale    gui) >>= \h ->
-  (rangeGetValue     $ attackScale      gui) >>= \i ->
-  (rangeGetValue     $ decayScale       gui) >>= \j ->
-  (rangeGetValue     $ sustainScale     gui) >>= \k ->
-  (rangeGetValue     $ releaseScale     gui) >>= \l ->
-  (rangeGetValue     $ modulationScale  gui) >>= \m ->
-  (rangeGetValue     $ textureScale     gui) >>= \n ->
-  (rangeGetValue     $ cutoffScale      gui) >>= \o ->
-  (rangeGetValue     $ resonanceScale   gui) >>= \p ->
-  (rangeGetValue     $ lfoDepthScale    gui) >>= \q ->
-  (rangeGetValue     $ lfoRateScale     gui) >>= \r ->
-  (rangeGetValue     $ effectDepthScale gui) >>= \s ->
-  (rangeGetValue     $ effectRateScale  gui) >>= \t ->
+getPatch gui = do
+  a <- comboBoxGetActive $ oscillatorCombo  gui
+  b <- comboBoxGetActive $ filterCombo      gui
+  c <- comboBoxGetActive $ lfoCombo         gui
+  d <- comboBoxGetActive $ effectCombo      gui
+  e <- rangeGetValue     $ volumeScale      gui
+  f <- rangeGetValue     $ octaveScale      gui
+  g <- rangeGetValue     $ glissandoScale   gui
+  h <- rangeGetValue     $ envelopeScale    gui
+  i <- rangeGetValue     $ attackScale      gui
+  j <- rangeGetValue     $ decayScale       gui
+  k <- rangeGetValue     $ sustainScale     gui
+  l <- rangeGetValue     $ releaseScale     gui
+  m <- rangeGetValue     $ modulationScale  gui
+  n <- rangeGetValue     $ textureScale     gui
+  o <- rangeGetValue     $ cutoffScale      gui
+  p <- rangeGetValue     $ resonanceScale   gui
+  q <- rangeGetValue     $ lfoDepthScale    gui
+  r <- rangeGetValue     $ lfoRateScale     gui
+  s <- rangeGetValue     $ effectDepthScale gui
+  t <- rangeGetValue     $ effectRateScale  gui
   return $ Patch a b c d e f g h i j k l m n o p q r s t
 
 setPatch :: Gui -> Patch -> IO ()
