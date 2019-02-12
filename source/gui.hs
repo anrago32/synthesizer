@@ -1,11 +1,8 @@
 module Gui where
 
-import Data.Maybe (fromMaybe)
-import Data.Text (pack)
 import Graphics.UI.Gtk
 import Patch
-
-data ElementSize = Large | Small
+import Widgets
 
 data Gui = Gui
   { scriptButton     :: Button
@@ -43,7 +40,7 @@ createGui = do
   containerAdd mainWindow table
 
   -- First Row
-  row1 <- createRow Small
+  row1 <- createRow SmallRow
   tableAttachDefaults table row1 0 4 0 1
   row1Section1 <- newSection row1
   row1Section2 <- newSection row1
@@ -63,7 +60,7 @@ createGui = do
   comboBoxSetActive combo1 0
 
   -- Second Row
-  row2 <- createRow Large
+  row2 <- createRow LargeRow
   tableAttachDefaults table row2 0 4 1 2
   row2Section1 <- newSection row2
   row2Section2 <- newSection row2
@@ -89,7 +86,7 @@ createGui = do
   addLabelScale row2Section4 scale8 "R"
 
   -- Third Row
-  row3 <- createRow Small
+  row3 <- createRow SmallRow
   tableAttachDefaults table row3 0 4 2 3
   row3Section1 <- newSection row3
   row3Section2 <- newSection row3
@@ -121,7 +118,7 @@ createGui = do
   addComboEntry combo5 "Phaser Effect"
 
   -- Fourth Row
-  row4 <- createRow Large
+  row4 <- createRow LargeRow
   tableAttachDefaults table row4 0 4 3 4
   row4Section1 <- newSection row4
   row4Section2 <- newSection row4
@@ -213,58 +210,3 @@ setPatch gui patch = do
   rangeSetValue     (lfoRateScale     gui) (lfoRate        patch)
   rangeSetValue     (effectDepthScale gui) (effectDepth    patch)
   rangeSetValue     (effectRateScale  gui) (effectRate     patch)
-
-addComboEntry :: ComboBox -> String -> IO Int
-addComboEntry combo text = comboBoxAppendText combo $ pack text
-
-addLabelScale :: HBox -> VScale -> String -> IO ()
-addLabelScale section scale text = do
-  slider <- vBoxNew False 0
-  label <- labelNew $ Just text
-  containerAdd slider scale
-  containerAdd slider label
-  rangeSetInverted scale True
-  scaleSetDrawValue scale False
-  widgetSetSizeRequest scale 0 100
-  widgetSetSizeRequest label 0 0
-  containerAdd section slider
-
-createRow :: ElementSize -> IO HBox
-createRow Large = do
-  row <- hBoxNew True 10
-  widgetSetSizeRequest row 0 100
-  return row
-createRow Small = do
-  row <- hBoxNew True 10
-  containerSetBorderWidth row 10
-  widgetSetSizeRequest row 0 0
-  return row
-
-createWindow :: String -> IO Window
-createWindow title = do
-  window <- windowNew
-  set window
-    [ windowTitle := title
-    , windowResizable := False
-    ]
-  widgetModifyBg window StateNormal $ Color maxBound maxBound maxBound
-  widgetSetSizeRequest window 600 400
-  return window
-
-newButton :: HBox -> IO Button
-newButton section = do
-  button <- buttonNew
-  containerAdd section button
-  return button
-
-newCombo :: HBox -> IO ComboBox
-newCombo section = do
-  combo <- comboBoxNewText
-  containerAdd section combo
-  return combo
-
-newSection :: HBox -> IO HBox
-newSection row = do
-  section <- hBoxNew True 0
-  containerAdd row section
-  return section
