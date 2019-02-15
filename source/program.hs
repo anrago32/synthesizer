@@ -14,11 +14,8 @@ main = do
   let path = "/home/anrago/Code/synthesizer/files/default.patch"
   patch <- read <$> readFile path
   setPatch gui patch
-  ------------------------------------------------------------------------------
-  -- Testing
   onClicked (loadButton gui) (loadPatch gui)
   onClicked (saveButton gui) (savePatch gui)
-  ------------------------------------------------------------------------------
   mainGUI
 
 playAudio :: [Float] -> IO ()
