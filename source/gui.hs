@@ -34,7 +34,7 @@ data Gui = Gui
 createGui :: IO Gui
 createGui = do
   -- Window Creation
-  mainWindow <- createWindow "Synthesizer"
+  mainWindow <- createWindow "Synthesizer" 600 400
   onDestroy mainWindow mainQuit
   table <- tableNew 4 4 False
   containerAdd mainWindow table
@@ -148,17 +148,20 @@ createGui = do
     scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
     scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
 
+processScript :: Gui -> IO ()
+processScript gui = do
+  scriptWindow <- createWindow "Process Script" 200 200
+  widgetShowAll scriptWindow
+
 loadPatch :: Gui -> IO ()
 loadPatch gui = do
-  loadWindow <- createWindow "Load Patch"
-  let file = "/home/anrago/Code/synthesizer/files/default.patch"
-  patch <- read <$> readFile file
-  setPatch gui patch
+  loadWindow <- createWindow "Load Patch" 200 200
   widgetShowAll loadWindow
+  setPatch gui "/home/anrago/Code/synthesizer/files/default.patch"
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
-  saveWindow <- createWindow "Save Patch"
+  saveWindow <- createWindow "Save Patch" 200 200
   let file = "/home/anrago/Code/synthesizer/files/default.patch"
   patch <- getPatch gui
   writeFile file $ show patch
@@ -188,8 +191,9 @@ getPatch gui = do
   t <- rangeGetValue     $ effectRateScale  gui
   return $ Patch a b c d e f g h i j k l m n o p q r s t
 
-setPatch :: Gui -> Patch -> IO ()
-setPatch gui patch = do
+setPatch :: Gui -> String -> IO ()
+setPatch gui file = do
+  patch <- read <$> readFile file
   comboBoxSetActive (oscillatorCombo  gui) (oscillatorType patch)
   comboBoxSetActive (filterCombo      gui) (filterType     patch)
   comboBoxSetActive (lfoCombo         gui) (lfoType        patch)

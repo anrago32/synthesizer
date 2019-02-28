@@ -31,15 +31,15 @@ createRow SmallRow = do
   widgetSetSizeRequest row 0 0
   return row
 
-createWindow :: String -> IO Window
-createWindow title = do
+createWindow :: String -> Int -> Int -> IO Window
+createWindow title x y = do
   window <- windowNew
   set window
     [ windowTitle := title
     , windowResizable := False
     ]
   widgetModifyBg window StateNormal $ Color maxBound maxBound maxBound
-  widgetSetSizeRequest window 600 400
+  widgetSetSizeRequest window x y
   return window
 
 newButton :: HBox -> IO Button

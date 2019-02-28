@@ -11,9 +11,8 @@ main :: IO ()
 main = do
   initGUI
   gui <- createGui
-  let path = "/home/anrago/Code/synthesizer/files/default.patch"
-  patch <- read <$> readFile path
-  setPatch gui patch
+  setPatch gui "/home/anrago/Code/synthesizer/files/default.patch"
+  onClicked (scriptButton gui) (processScript gui)
   onClicked (loadButton gui) (loadPatch gui)
   onClicked (saveButton gui) (savePatch gui)
   mainGUI
@@ -27,7 +26,6 @@ playAudio audio = do
   simpleFree s
 
 playNote :: IO ()
-
 playNote = do
   let times = [0..48000 * 2]
   let audio = finalOutput <$> times
