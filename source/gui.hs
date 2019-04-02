@@ -157,14 +157,10 @@ loadPatch :: Gui -> IO ()
 loadPatch gui = do
   loadWindow <- createWindow "Load Patch" 200 200
   widgetShowAll loadWindow
-  setPatch gui "/home/anrago/Code/synthesizer/files/default.patch"
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
   saveWindow <- createWindow "Save Patch" 200 200
-  let file = "/home/anrago/Code/synthesizer/files/default.patch"
-  patch <- getPatch gui
-  writeFile file $ show patch
   widgetShowAll saveWindow
 
 getPatch :: Gui -> IO Patch
