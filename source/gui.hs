@@ -35,9 +35,9 @@ createGui :: IO Gui
 createGui = do
   -- Window Creation
   mainWindow <- createWindow "Synthesizer" 600 400
-  onDestroy mainWindow mainQuit
   table <- tableNew 4 4 False
   containerAdd mainWindow table
+  onDestroy mainWindow mainQuit
 
   -- First Row
   row1 <- createRow SmallRow
@@ -157,11 +157,15 @@ loadPatch :: Gui -> IO ()
 loadPatch gui = do
   loadWindow <- createWindow "Load Patch" 200 200
   widgetShowAll loadWindow
+  table <- tableNew 4 4 False
+  containerAdd loadWindow table
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
   saveWindow <- createWindow "Save Patch" 200 200
   widgetShowAll saveWindow
+  table <- tableNew 4 4 False
+  containerAdd saveWindow table
 
 getPatch :: Gui -> IO Patch
 getPatch gui = do
