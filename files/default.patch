@@ -11,7 +11,7 @@ Patch
   , decay          = 0.0
   , sustain        = 0.0
   , release        = 0.0
-  , modulation     = 2.0
+  , modulation     = 0.0
   , texture        = 0.0
   , cutoff         = 0.0
   , resonance      = 0.0
