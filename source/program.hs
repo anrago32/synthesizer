@@ -4,7 +4,6 @@
 
 module Main where
 
-
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Gdk.Events
 import Sound.Pulse.Simple
@@ -12,7 +11,6 @@ import Audio
 import Gui
 import Patch
 import Pitch
-
 
 main :: IO ()
 main = do
@@ -24,7 +22,6 @@ main = do
   onClicked (saveButton gui) (savePatch gui)
   onKeyPress (mainWindow gui) handleKeyPress
   mainGUI
-
 
 handleKeyPress :: Event -> IO Bool
 handleKeyPress event = do
@@ -72,7 +69,6 @@ handleKeyPress event = do
         _ -> return ()
     _ -> return ()
   return True
-
 
 play :: Pitch -> IO ()
 play pitch = do

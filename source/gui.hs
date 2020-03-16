@@ -4,11 +4,9 @@
 
 module Gui where
 
-
 import Data.Text (pack)
 import Graphics.UI.Gtk
 import Patch
-
 
 data Gui = Gui
   { scriptButton     :: Button
@@ -37,7 +35,6 @@ data Gui = Gui
   , effectRateScale  :: VScale
   , mainWindow       :: Window
   }
-
 
 createGui :: IO Gui
 createGui = do
@@ -152,12 +149,10 @@ createGui = do
     scale2 scale3 scale4 scale5 scale6 scale7 scale8 scale9 scale10 scale11
     scale12 scale13 scale14 scale15 scale16 mainWindow
 
-
 processScript :: Gui -> IO ()
 processScript gui = do
   scriptWindow <- createWindow "Process Script" 300 200
   widgetShowAll scriptWindow
-
 
 loadPatch :: Gui -> IO ()
 loadPatch gui = do
@@ -170,7 +165,6 @@ loadPatch gui = do
   containerAdd topRow table
   containerAdd loadWindow table
 
-
 savePatch :: Gui -> IO ()
 savePatch gui = do
   saveWindow <- createWindow "Save Patch" 150 100
@@ -181,7 +175,6 @@ savePatch gui = do
   combo <- newCombo topSection
   containerAdd topRow table
   containerAdd saveWindow table
-
 
 getPatch :: Gui -> IO Patch
 getPatch gui = do
@@ -207,7 +200,6 @@ getPatch gui = do
   t <- rangeGetValue     $ effectRateScale  gui
   return $ Patch a b c d e f g h i j k l m n o p q r s t
 
-
 setPatch :: Gui -> String -> IO ()
 setPatch gui file = do
   patch <- read <$> readFile file
@@ -232,13 +224,10 @@ setPatch gui file = do
   rangeSetValue     (effectDepthScale gui) (effectDepth    patch)
   rangeSetValue     (effectRateScale  gui) (effectRate     patch)
 
-
 data RowSize = LargeRow | SmallRow
-
 
 addComboEntry :: ComboBox -> String -> IO Int
 addComboEntry combo text = comboBoxAppendText combo $ pack text
-
 
 addLabelScale :: HBox -> VScale -> String -> IO ()
 addLabelScale section scale text = do
@@ -252,7 +241,6 @@ addLabelScale section scale text = do
   widgetSetSizeRequest label 0 0
   containerAdd section slider
 
-
 createRow :: RowSize -> IO HBox
 createRow LargeRow = do
   row <- hBoxNew True 10
@@ -263,7 +251,6 @@ createRow SmallRow = do
   containerSetBorderWidth row 10
   widgetSetSizeRequest row 0 0
   return row
-
 
 createWindow :: String -> Int -> Int -> IO Window
 createWindow title x y = do
@@ -276,20 +263,17 @@ createWindow title x y = do
   widgetSetSizeRequest window x y
   return window
 
-
 newButton :: HBox -> IO Button
 newButton section = do
   button <- buttonNew
   containerAdd section button
   return button
 
-
 newCombo :: HBox -> IO ComboBox
 newCombo section = do
   combo <- comboBoxNewText
   containerAdd section combo
   return combo
-
 
 newSection :: HBox -> IO HBox
 newSection row = do

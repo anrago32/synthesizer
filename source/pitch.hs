@@ -4,10 +4,8 @@
 
 module Pitch where
 
-
 type Pitch = (Note, Int)
 data Note = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
-
 
 intToPitch :: Int -> Pitch
 intToPitch number
@@ -26,7 +24,6 @@ intToPitch number
   where note = number `mod` 12
         octave = number `div` 12
 
-
 pitchToInt :: Pitch -> Int
 pitchToInt (C , octave) = octave * 12 + 0
 pitchToInt (Cs, octave) = octave * 12 + 1
@@ -41,11 +38,9 @@ pitchToInt (A , octave) = octave * 12 + 9
 pitchToInt (As, octave) = octave * 12 + 10
 pitchToInt (B , octave) = octave * 12 + 11
 
-
 scientificPitch :: Pitch -> Float
 scientificPitch pitch = 256.0 * (2.0 ** ((noteNumber - 48.0) / 12.0))
   where noteNumber = fromIntegral $ pitchToInt pitch :: Float
-
 
 standardPitch :: Pitch -> Float
 standardPitch pitch = 440.0 * (2.0 ** ((pitchNumber - 57.0) / 12.0))

@@ -4,9 +4,7 @@
 
 module Audio where
 
-
 import Pitch
-
 
 -- cMajor :: Int -> Float
 -- cMajor time = generateChord [tone1, tone2, tone3]
@@ -23,13 +21,11 @@ import Pitch
 -- generateChord :: [Float] -> Float
 -- generateChord tones = (sum tones) / (length tones)
 
-
 sineOsc :: Pitch -> Int -> Float
 sineOsc pitch time = sin phase * 0.5
   where phase = fromIntegral time * frequency * pi * 2.0 / sampleRate
         frequency = standardPitch pitch
         sampleRate = 48000.0
-
 
 fmOsc :: Pitch -> Int -> Float
 fmOsc pitch time = sin (sineOsc pitch time * 2) * 0.5

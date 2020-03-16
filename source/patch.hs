@@ -4,7 +4,6 @@
 
 module Patch where
 
-
 data Patch = Patch
   { oscillatorType :: Int
   , filterType     :: Int
@@ -27,7 +26,6 @@ data Patch = Patch
   , effectDepth    :: Double
   , effectRate     :: Double
   } deriving (Read)
-
 
 instance Show Patch where
   show patch = "Patch\n"
