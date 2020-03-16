@@ -1,4 +1,9 @@
+-- Patch
+-- Description goes here
+-- Written by Alex Rago, 2020
+
 module Patch where
+
 
 data Patch = Patch
   { oscillatorType :: Int
@@ -22,6 +27,7 @@ data Patch = Patch
   , effectDepth    :: Double
   , effectRate     :: Double
   } deriving (Read)
+
 
 instance Show Patch where
   show patch = "Patch\n"

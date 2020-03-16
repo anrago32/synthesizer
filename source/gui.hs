@@ -1,8 +1,14 @@
+-- GUI
+-- Description goes here
+-- Written by Alex Rago, 2020
+
 module Gui where
 
+
+import Data.Text (pack)
 import Graphics.UI.Gtk
 import Patch
-import Widgets
+
 
 data Gui = Gui
   { scriptButton     :: Button
@@ -29,7 +35,9 @@ data Gui = Gui
   , lfoRateScale     :: VScale
   , effectDepthScale :: VScale
   , effectRateScale  :: VScale
+  , mainWindow       :: Window
   }
+
 
 createGui :: IO Gui
 createGui = do
@@ -77,11 +85,9 @@ createGui = do
   scale8 <- vScaleNewWithRange 0 100 1
 
   addLabelScale row2Section1 scale1 "Vol"
-  addLabelScale row2Section1 scale2 "Oct"
-  addLabelScale row2Section2 scale3 "Gls"
-  addLabelScale row2Section2 scale4 "Env"
-  addLabelScale row2Section3 scale5 "A"
-  addLabelScale row2Section3 scale6 "D"
+  addLabelScale row2Section1 scale4 "Env"
+  addLabelScale row2Section4 scale5 "A"
+  addLabelScale row2Section4 scale6 "D"
   addLabelScale row2Section4 scale7 "S"
   addLabelScale row2Section4 scale8 "R"
 
@@ -98,24 +104,22 @@ createGui = do
   combo4 <- newCombo row3Section3
   combo5 <- newCombo row3Section4
 
-  addComboEntry combo2 "AM Oscillator"
-  addComboEntry combo2 "FM Oscillator"
-  addComboEntry combo2 "Pulse Oscillator"
-  addComboEntry combo2 "Saw Oscillator"
-  addComboEntry combo2 "Sync Oscillator"
+  addComboEntry combo2 "Am Osc"
+  addComboEntry combo2 "Fm Osc"
+  addComboEntry combo2 "Pulse Osc"
+  addComboEntry combo2 "Saw Osc"
+  addComboEntry combo2 "Sync Osc"
   addComboEntry combo3 "No Filter"
-  addComboEntry combo3 "Band-Pass Filter"
-  addComboEntry combo3 "High-Pass Filter"
-  addComboEntry combo3 "Low-Pass Filter"
+  addComboEntry combo3 "Highpass Filter"
+  addComboEntry combo3 "Lowpass Filter"
   addComboEntry combo4 "No Lfo"
   addComboEntry combo4 "Amplitude Lfo"
-  addComboEntry combo4 "Filter Lfo"
+  addComboEntry combo4 "Cutoff Lfo"
   addComboEntry combo4 "Frequency Lfo"
+  addComboEntry combo4 "Modulation Lfo"
   addComboEntry combo5 "No Effect"
   addComboEntry combo5 "Chorus Effect"
   addComboEntry combo5 "Delay Effect"
-  addComboEntry combo5 "Distortion Effect"
-  addComboEntry combo5 "Phaser Effect"
 
   -- Fourth Row
   row4 <- createRow LargeRow
@@ -144,28 +148,40 @@ createGui = do
   addLabelScale row4Section4 scale16 "Rate"
 
   widgetShowAll mainWindow
-  return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5
-    scale1 scale2 scale3 scale4 scale5 scale6 scale7 scale8
-    scale9 scale10 scale11 scale12 scale13 scale14 scale15 scale16
+  return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5 scale1
+    scale2 scale3 scale4 scale5 scale6 scale7 scale8 scale9 scale10 scale11
+    scale12 scale13 scale14 scale15 scale16 mainWindow
+
 
 processScript :: Gui -> IO ()
 processScript gui = do
-  scriptWindow <- createWindow "Process Script" 200 200
+  scriptWindow <- createWindow "Process Script" 300 200
   widgetShowAll scriptWindow
+
 
 loadPatch :: Gui -> IO ()
 loadPatch gui = do
-  loadWindow <- createWindow "Load Patch" 200 200
+  loadWindow <- createWindow "Load Patch" 150 100
   widgetShowAll loadWindow
   table <- tableNew 4 4 False
+  topRow <- createRow SmallRow
+  topSection <- newSection topRow
+  combo <- newCombo topSection
+  containerAdd topRow table
   containerAdd loadWindow table
+
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
-  saveWindow <- createWindow "Save Patch" 200 200
+  saveWindow <- createWindow "Save Patch" 150 100
   widgetShowAll saveWindow
   table <- tableNew 4 4 False
+  topRow <- createRow SmallRow
+  topSection <- newSection topRow
+  combo <- newCombo topSection
+  containerAdd topRow table
   containerAdd saveWindow table
+
 
 getPatch :: Gui -> IO Patch
 getPatch gui = do
@@ -191,6 +207,7 @@ getPatch gui = do
   t <- rangeGetValue     $ effectRateScale  gui
   return $ Patch a b c d e f g h i j k l m n o p q r s t
 
+
 setPatch :: Gui -> String -> IO ()
 setPatch gui file = do
   patch <- read <$> readFile file
@@ -214,3 +231,68 @@ setPatch gui file = do
   rangeSetValue     (lfoRateScale     gui) (lfoRate        patch)
   rangeSetValue     (effectDepthScale gui) (effectDepth    patch)
   rangeSetValue     (effectRateScale  gui) (effectRate     patch)
+
+
+data RowSize = LargeRow | SmallRow
+
+
+addComboEntry :: ComboBox -> String -> IO Int
+addComboEntry combo text = comboBoxAppendText combo $ pack text
+
+
+addLabelScale :: HBox -> VScale -> String -> IO ()
+addLabelScale section scale text = do
+  slider <- vBoxNew False 0
+  label <- labelNew $ Just text
+  containerAdd slider scale
+  containerAdd slider label
+  rangeSetInverted scale True
+  scaleSetDrawValue scale False
+  widgetSetSizeRequest scale 0 100
+  widgetSetSizeRequest label 0 0
+  containerAdd section slider
+
+
+createRow :: RowSize -> IO HBox
+createRow LargeRow = do
+  row <- hBoxNew True 10
+  widgetSetSizeRequest row 0 100
+  return row
+createRow SmallRow = do
+  row <- hBoxNew True 10
+  containerSetBorderWidth row 10
+  widgetSetSizeRequest row 0 0
+  return row
+
+
+createWindow :: String -> Int -> Int -> IO Window
+createWindow title x y = do
+  window <- windowNew
+  set window
+    [ windowTitle := title
+    , windowResizable := False
+    ]
+  widgetModifyBg window StateNormal $ Color maxBound maxBound maxBound
+  widgetSetSizeRequest window x y
+  return window
+
+
+newButton :: HBox -> IO Button
+newButton section = do
+  button <- buttonNew
+  containerAdd section button
+  return button
+
+
+newCombo :: HBox -> IO ComboBox
+newCombo section = do
+  combo <- comboBoxNewText
+  containerAdd section combo
+  return combo
+
+
+newSection :: HBox -> IO HBox
+newSection row = do
+  section <- hBoxNew True 0
+  containerAdd row section
+  return section

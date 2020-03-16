@@ -1,6 +1,12 @@
+-- Audio
+-- Description goes here
+-- Written by Alex Rago, 2020
+
 module Audio where
 
+
 import Pitch
+
 
 -- cMajor :: Int -> Float
 -- cMajor time = generateChord [tone1, tone2, tone3]
@@ -15,13 +21,15 @@ import Pitch
 --         tone3 = sineOscillator (C, 6) time
 --
 -- generateChord :: [Float] -> Float
--- generateChord [tone] = tone
--- generateChord (tone:tones) = (tone + generateChord tones) / 2.0
+-- generateChord tones = (sum tones) / (length tones)
 
-sineOscillator :: Float -> Int -> Float
-sineOscillator frequency time = sin phase
+
+sineOsc :: Pitch -> Int -> Float
+sineOsc pitch time = sin phase * 0.5
   where phase = fromIntegral time * frequency * pi * 2.0 / sampleRate
+        frequency = standardPitch pitch
         sampleRate = 48000.0
 
-finalOutput :: Int -> Float
-finalOutput time = sin (sineOscillator 440.0 time * 2)
+
+fmOsc :: Pitch -> Int -> Float
+fmOsc pitch time = sin (sineOsc pitch time * 2) * 0.5
