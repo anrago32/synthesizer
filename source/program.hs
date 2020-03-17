@@ -4,6 +4,9 @@
 
 module Main where
 
+import Control.Concurrent
+import Data.IORef
+import Data.Map
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Gdk.Events
 import Sound.Pulse.Simple
@@ -12,71 +15,57 @@ import Gui
 import Patch
 import Pitch
 
+type AudioPlayer = Simple
+type KeyboardState = IORef [Pitch]
+
 main :: IO ()
 main = do
   initGUI
   gui <- createGui
+  audioPlayer <- createPlayer
+  keyboardState <- newIORef []
+
   setPatch gui "/home/anrago/Code/synthesizer/files/default.patch"
-  onClicked (scriptButton gui) (processScript gui)
+  onClicked (configureButton gui) (configuration gui)
   onClicked (loadButton gui) (loadPatch gui)
   onClicked (saveButton gui) (savePatch gui)
-  onKeyPress (mainWindow gui) handleKeyPress
+  onKeyPress (mainWindow gui) (keyboardHandler audioPlayer keyboardState)
+  onKeyRelease (mainWindow gui) (keyboardHandler audioPlayer keyboardState)
+
   mainGUI
+  simpleFree audioPlayer
 
-handleKeyPress :: Event -> IO Bool
-handleKeyPress event = do
-  case event of
-    (Key _ _ _ _ _ _ _ _ _ (Just character)) ->
-      case character of
-        'z' -> play (C, 4)
-        's' -> play (Cs, 4)
-        'x' -> play (D, 4)
-        'd' -> play (Ds, 4)
-        'c' -> play (E, 4)
-        'v' -> play (F, 4)
-        'g' -> play (Fs, 4)
-        'b' -> play (G, 4)
-        'h' -> play (Gs, 4)
-        'n' -> play (A, 4)
-        'j' -> play (As, 4)
-        'm' -> play (B, 4)
-        ',' -> play (C, 5)
-        'l' -> play (Cs, 5)
-        '.' -> play (D, 5)
-        ';' -> play (Ds, 5)
-        '/' -> play (E, 5)
-        'q' -> play (C, 6)
-        '2' -> play (Cs, 6)
-        'w' -> play (D, 6)
-        '3' -> play (Ds, 6)
-        'e' -> play (E, 6)
-        'r' -> play (F, 6)
-        '5' -> play (Fs, 6)
-        't' -> play (G, 6)
-        '6' -> play (Gs, 6)
-        'y' -> play (A, 6)
-        '7' -> play (As, 6)
-        'u' -> play (B, 6)
-        'i' -> play (C, 7)
-        '9' -> play (Cs, 7)
-        'o' -> play (D, 7)
-        '0' -> play (Ds, 7)
-        'p' -> play (E, 7)
-        '[' -> play (F, 7)
-        '=' -> play (Fs, 7)
-        ']' -> play (G, 7)
-        '\\' -> play (A, 7)
-        _ -> return ()
-    _ -> return ()
-  return True
+keyPitchMap :: Map Char Pitch
+keyPitchMap = fromList
+  [ ('z', (C, 4)), ('s', (Cs, 4)), ('x', (D, 4)), ('d', (Ds, 4)), ('c', (E, 4))
+  , ('v', (F, 4)), ('g', (Fs, 4)), ('b', (G, 4)), ('h', (Gs, 4)), ('n', (A, 4))
+  , ('j', (As, 4)), ('m', (B, 4)), (',', (C, 5)), ('l', (Cs, 5)), ('.', (D, 5))
+  , (';', (Ds, 5)), ('/', (E, 5)), ('q', (C, 6)), ('2', (Cs, 6)), ('w', (D, 6))
+  , ('3', (Ds, 6)), ('e', (E, 6)), ('r', (F, 6)), ('5', (Fs, 6)), ('t', (G, 6))
+  , ('6', (Gs, 6)), ('y', (A, 6)), ('7', (As, 6)), ('u', (B, 6)), ('i', (C, 7))
+  , ('9', (Cs, 7)), ('o', (D, 7)), ('0', (Ds, 7)), ('p', (E, 7)), ('[', (F, 7))
+  , ('=', (Fs, 7)), (']', (G, 7)), ('\\', (A, 7))
+  ]
 
-play :: Pitch -> IO ()
-play pitch = do
-  let sampleFormat = F32 LittleEndian
-  let sampleSpec = SampleSpec sampleFormat 48000 1
-  let times = [0..12000]
+keyboardHandler :: AudioPlayer -> KeyboardState -> Event -> IO Bool
+keyboardHandler audioPlayer keyboardState event = case event of
+    (Key released _ _ _ _ _ _ _ _ (Just character)) ->
+      if member character keyPitchMap then do
+        let pitch = keyPitchMap ! character
+        if released then
+          modifyIORef keyboardState (Prelude.filter (/= pitch))
+          else modifyIORef keyboardState (++ [pitch])
+        forkIO $ playAudio audioPlayer keyboardState 0
+        return True
+      else return False
+    _ -> return False
 
-  let audio = fmOsc pitch <$> times
-  s <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
-  simpleWrite s audio
-  simpleFree s
+playAudio :: AudioPlayer -> KeyboardState -> Int -> IO ()
+playAudio audioPlayer keyboardState time = do
+  pitches <- readIORef keyboardState
+  if length pitches /= 0 then do
+    let pitch = pitches !! 0
+    let audio = fmOsc pitch <$> [time..time + 8000]
+    simpleWrite audioPlayer audio
+    playAudio audioPlayer keyboardState $ time + 8000
+    else return ()

@@ -9,7 +9,7 @@ import Graphics.UI.Gtk
 import Patch
 
 data Gui = Gui
-  { scriptButton     :: Button
+  { configureButton  :: Button
   , loadButton       :: Button
   , saveButton       :: Button
   , inputCombo       :: ComboBox
@@ -59,7 +59,7 @@ createGui = do
 
   addComboEntry combo1 "Keyboard Input"
   addComboEntry combo1 "MIDI Input"
-  buttonSetLabel button1 "Process Script"
+  buttonSetLabel button1 "Configuration"
   buttonSetLabel button2 "Load Patch"
   buttonSetLabel button3 "Save Patch"
   comboBoxSetActive combo1 0
@@ -149,10 +149,10 @@ createGui = do
     scale2 scale3 scale4 scale5 scale6 scale7 scale8 scale9 scale10 scale11
     scale12 scale13 scale14 scale15 scale16 mainWindow
 
-processScript :: Gui -> IO ()
-processScript gui = do
-  scriptWindow <- createWindow "Process Script" 300 200
-  widgetShowAll scriptWindow
+configuration :: Gui -> IO ()
+configuration gui = do
+  configurationWindow <- createWindow "Configuration" 300 200
+  widgetShowAll configurationWindow
 
 loadPatch :: Gui -> IO ()
 loadPatch gui = do

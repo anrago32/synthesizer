@@ -4,7 +4,15 @@
 
 module Audio where
 
+import Sound.Pulse.Simple
 import Pitch
+
+createPlayer :: IO Simple
+createPlayer = do
+  let sampleFormat = F32 LittleEndian
+  let sampleSpec = SampleSpec sampleFormat 48000 1
+  player <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
+  return player
 
 -- cMajor :: Int -> Float
 -- cMajor time = generateChord [tone1, tone2, tone3]
