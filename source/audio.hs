@@ -18,20 +18,15 @@ playChord :: [Float] -> Float
 playChord tones = sum tones
 
 -- Envelope Specification
--- A(t) = t / a
--- D(t) = 1 + (a - t) / d
--- S(t) = s / 100
--- R(t) = endVolume / 100 + (endTime - t) / r
+-- E(t) = 0 < t < a     -> A(t) = t / a
+--        a < t < a + d -> D(t) = 1 + (100 - s) * (a - t) / (100 * d)
+--        a + d < t < m -> S(t) = s / 100
+--        m < t < m + r -> R(t) = v / 100 + v * (m - t) / (100 * r)
 
--- E(t) = 0 < t < a                   -> A(t)
---        a < t < a + d - d * s / 100 -> D(t)
---        a + d - d * s / 100 < t < m -> S(t)
---        m < t < m + r * v / 100     -> R(t)
-
--- a: Attack Slope
--- d: Decay Slope
--- s: Sustain Level
--- r: Release Slope
+-- a: Attack Intensity
+-- d: Decay Intensity
+-- s: Sustain Volume
+-- r: Release Intensity
 
 -- m: Release Time
 -- v: Release Volume
