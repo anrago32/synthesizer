@@ -17,19 +17,56 @@ createPlayer = do
 playChord :: [Float] -> Float
 playChord tones = sum tones
 
--- Envelope Specification
--- E(t) = 0 < t < a     -> A(t) = t / a
---        a < t < a + d -> D(t) = 1 + (100 - s) * (a - t) / (100 * d)
---        a + d < t < m -> S(t) = s / 100
---        m < t < m + r -> R(t) = v / 100 + v * (m - t) / (100 * r)
+data Envelope = Envelope
+  { attack         :: Float
+  , decay          :: Float
+  , sustain        :: Float
+  , release        :: Float
+  , timeReleased   :: Float
+  , volumeReleased :: Float
+  }
 
--- a: Attack Intensity
--- d: Decay Intensity
--- s: Sustain Volume
--- r: Release Intensity
+adjustedEnvelopeTime :: Int -> Float
+adjustedEnvelopeTime time = 25e-8 * fromIntegral time ^ 4 * 48000
 
--- m: Release Time
--- v: Release Volume
+adjustedEnvelopeLevel :: Int -> Float
+adjustedEnvelopeLevel level = 1e-2 * fromIntegral level
+
+newEnvelope :: Int -> Int -> Int -> Int -> Envelope
+newEnvelope a d s r = Envelope
+  { attack = adjustedEnvelopeTime a
+  , decay = adjustedEnvelopeTime d
+  , sustain = adjustedEnvelopeLevel s
+  , release = adjustedEnvelopeTime r
+  , timeReleased = -1
+  , volumeReleased = -1
+  }
+
+calculateAttack :: Envelope -> Float -> Float
+calculateAttack (Envelope a d s _ _ _) t = t / a
+
+calculateDecay :: Envelope -> Float -> Float
+calculateDecay (Envelope a d s _ _ _) t = 1 + (1 - s) * (a - t) / d
+
+calculateSustain :: Envelope -> Float -> Float
+calculateSustain (Envelope a d s _ _ _) t = s
+
+calculateRelease :: Envelope -> Float -> Float
+calculateRelease (Envelope _ _ _ r m v) t = v + v * (m - t) / r
+
+envelopeLevel :: Envelope -> Int -> Float
+envelopeLevel envelope time
+  | t < a = calculateAttack envelope t ** (-shape)
+  | t < a + d = calculateDecay envelope t ** shape
+  | m == -1 = calculateSustain envelope t ** shape
+  | t < m + r = calculateRelease envelope t ** shape
+  | otherwise = 0
+  where a = attack envelope
+        d = decay envelope
+        m = timeReleased envelope
+        r = release envelope
+        t = fromIntegral time
+        shape = log $ t / 48000
 
 sineOsc :: Pitch -> Int -> Float
 sineOsc pitch time = sin phase * 0.2
@@ -39,4 +76,4 @@ sineOsc pitch time = sin phase * 0.2
 
 -- FM Oscillator Prototype
 -- fmOsc :: Pitch -> Int -> Float
--- fmOsc pitch time = sin (sineOsc pitch time * 2) * 0.25
+-- fmOsc pitch time = sin (sineOsc pitch time * 2) * 0.2
