@@ -6,7 +6,7 @@ module Pitch where
 
 type Pitch = (Note, Int)
 data Note = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
-  deriving (Eq)
+  deriving (Eq, Ord, Show)
 
 intToPitch :: Int -> Pitch
 intToPitch number
