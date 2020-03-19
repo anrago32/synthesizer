@@ -70,7 +70,7 @@ playAudio audioPlayer keyboardState time = do
   let pitches = Set.toList p
   if length pitches /= 0 then do
     let sample = sum $ (\x -> sineOsc x time) <$> pitches
-    let envelope = createEnvelope 25 50 75 50
+    let envelope = createEnvelope 50 50 75 75
     let shapedSample = calculateEnvelope envelope time * sample
     simpleWrite audioPlayer $ [shapedSample]
     playAudio audioPlayer keyboardState $ time + 1

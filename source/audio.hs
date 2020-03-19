@@ -18,7 +18,6 @@ data Envelope = Envelope
   , volumeReleased :: Float
   }
 
--- Create pulse simple audio player
 createPlayer :: IO AudioPlayer
 createPlayer = do
   let sampleFormat = F32 LittleEndian
@@ -26,38 +25,44 @@ createPlayer = do
   player <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
   return player
 
--- Calculate oscillator value at point in time
+oscPhase :: Pitch -> Int -> Float
+oscPhase pitch time = fromIntegral time * frequency * pi / 24000
+  where frequency = standardPitch pitch
+
 sineOsc :: Pitch -> Int -> Float
 sineOsc pitch time = sin phase * 0.2
-  where phase = fromIntegral time * frequency * pi * 2.0 / sampleRate
-        frequency = standardPitch pitch
-        sampleRate = 48000.0
+  where phase = oscPhase pitch time
 
-fmOsc :: Pitch -> Int -> Float
-fmOsc pitch time = sin (sineOsc pitch time * 10) * 0.2
+amOsc :: Pitch -> Int -> Float -> Float
+amOsc pitch time m = sin phase * sin (phase * m) * 0.2
+  where phase = oscPhase pitch time
+
+fmOsc :: Pitch -> Int -> Float -> Float
+fmOsc pitch time m = sin (sin phase * m) * 0.2
+  where phase = sineOsc pitch time
 
 -- Create attack, decay, sustain, release envelope
 createEnvelope :: Int -> Int -> Int -> Int -> Envelope
 createEnvelope a d s r = Envelope
-  { attack = adjustedAttack a
-  , decay = adjustedDecay d
-  , sustain = adjustedSustain s
-  , release = adjustedRelease r
+  { attack = rescaleAttack a
+  , decay = rescaleDecay d
+  , sustain = rescaleSustain s
+  , release = rescaleRelease r
   , timeReleased = -1
   , volumeReleased = -1
   }
 
-adjustedAttack :: Int -> Float
-adjustedAttack level = 1e-5 * fromIntegral level ^ 3 * 48000
+rescaleAttack :: Int -> Float
+rescaleAttack level = 1e-5 * fromIntegral level ^ 3 * 48000
 
-adjustedDecay :: Int -> Float
-adjustedDecay level = 1e-4 * fromIntegral level ^ 3 * 48000
+rescaleDecay :: Int -> Float
+rescaleDecay level = 1e-4 * fromIntegral level ^ 3 * 48000
 
-adjustedSustain :: Int -> Float
-adjustedSustain level = 1e-2 * fromIntegral level
+rescaleSustain :: Int -> Float
+rescaleSustain level = 1e-2 * fromIntegral level
 
-adjustedRelease :: Int -> Float
-adjustedRelease level = 1e-4 * fromIntegral level ^ 3 * 48000
+rescaleRelease :: Int -> Float
+rescaleRelease level = 1e-4 * fromIntegral level ^ 3 * 48000
 
 -- Calculate envelope value at point in time
 calculateEnvelope :: Envelope -> Int -> Float
