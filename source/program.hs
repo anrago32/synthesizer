@@ -16,7 +16,6 @@ import Gui
 import Patch
 import Pitch
 
-type AudioPlayer = Simple
 type KeyboardState = IORef (Set Pitch)
 
 main :: IO ()
