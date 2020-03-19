@@ -12,7 +12,7 @@ import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Gdk.Events
 import Sound.Pulse.Simple
 import Audio
-import Gui
+import GUI
 import Patch
 import Pitch
 
@@ -21,7 +21,7 @@ type KeyboardState = IORef (Set Pitch)
 main :: IO ()
 main = do
   initGUI
-  gui <- createGui
+  gui <- createGUI
   audioPlayer <- createPlayer
   keyboardState <- newIORef $ Set.fromList []
 

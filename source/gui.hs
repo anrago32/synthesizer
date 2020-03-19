@@ -2,13 +2,13 @@
 -- Description goes here
 -- Written by Alex Rago, 2020
 
-module Gui where
+module GUI where
 
 import Data.Text (pack)
 import Graphics.UI.Gtk
 import Patch
 
-data Gui = Gui
+data GUI = GUI
   { adjustButton     :: Button
   , loadButton       :: Button
   , saveButton       :: Button
@@ -36,8 +36,8 @@ data Gui = Gui
   , mainWindow       :: Window
   }
 
-createGui :: IO Gui
-createGui = do
+createGUI :: IO GUI
+createGUI = do
   -- Window Creation
   mainWindow <- createWindow "Synthesizer" 600 400
   table <- tableNew 4 4 False
@@ -145,16 +145,16 @@ createGui = do
   addLabelScale row4Section4 scale16 "Rate"
 
   widgetShowAll mainWindow
-  return $ Gui button1 button2 button3 combo1 combo2 combo3 combo4 combo5 scale1
+  return $ GUI button1 button2 button3 combo1 combo2 combo3 combo4 combo5 scale1
     scale2 scale3 scale4 scale5 scale6 scale7 scale8 scale9 scale10 scale11
     scale12 scale13 scale14 scale15 scale16 mainWindow
 
-adjustSettings :: Gui -> IO ()
+adjustSettings :: GUI -> IO ()
 adjustSettings gui = do
   configurationWindow <- createWindow "Adjust Settings" 300 200
   widgetShowAll configurationWindow
 
-loadPatch :: Gui -> IO ()
+loadPatch :: GUI -> IO ()
 loadPatch gui = do
   loadWindow <- createWindow "Load Patch" 150 100
   widgetShowAll loadWindow
@@ -165,7 +165,7 @@ loadPatch gui = do
   --containerAdd topRow table
   --containerAdd loadWindow table
 
-savePatch :: Gui -> IO ()
+savePatch :: GUI -> IO ()
 savePatch gui = do
   saveWindow <- createWindow "Save Patch" 150 100
   widgetShowAll saveWindow
@@ -176,7 +176,7 @@ savePatch gui = do
   --containerAdd topRow table
   --containerAdd saveWindow table
 
-getPatch :: Gui -> IO Patch
+getPatch :: GUI -> IO Patch
 getPatch gui = do
   a <- comboBoxGetActive $ oscillatorCombo  gui
   b <- comboBoxGetActive $ filterCombo      gui
@@ -200,7 +200,7 @@ getPatch gui = do
   t <- rangeGetValue     $ effectRateScale  gui
   return $ Patch a b c d e f g h i j k l m n o p q r s t
 
-setPatch :: Gui -> String -> IO ()
+setPatch :: GUI -> String -> IO ()
 setPatch gui file = do
   patch <- read <$> readFile file
   comboBoxSetActive (oscillatorCombo  gui) (oscillatorType patch)
