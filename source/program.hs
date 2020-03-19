@@ -26,7 +26,7 @@ main = do
   keyboardState <- newIORef $ Set.fromList []
 
   setPatch gui "/home/anrago/code/synthesizer/files/default.patch"
-  onClicked (configureButton gui) (configuration gui)
+  onClicked (adjustButton gui) (adjustSettings gui)
   onClicked (loadButton gui) (loadPatch gui)
   onClicked (saveButton gui) (savePatch gui)
   onKeyPress (mainWindow gui) (keyboardHandler audioPlayer keyboardState)
