@@ -36,16 +36,16 @@ data GUI = GUI
   , mainWindow       :: Window
   }
 
-createGUI :: IO GUI
-createGUI = do
+newGUI :: IO GUI
+newGUI = do
   -- Window Creation
-  mainWindow <- createWindow "Synthesizer" 600 400
+  mainWindow <- newWindow "Synthesizer" 600 400
   table <- tableNew 4 4 False
   containerAdd mainWindow table
   onDestroy mainWindow mainQuit
 
   -- First Row
-  row1 <- createRow SmallRow
+  row1 <- newRow SmallRow
   tableAttachDefaults table row1 0 4 0 1
   row1Section1 <- newSection row1
   row1Section2 <- newSection row1
@@ -65,7 +65,7 @@ createGUI = do
   comboBoxSetActive combo1 0
 
   -- Second Row
-  row2 <- createRow LargeRow
+  row2 <- newRow LargeRow
   tableAttachDefaults table row2 0 4 1 2
   row2Section1 <- newSection row2
   row2Section2 <- newSection row2
@@ -89,7 +89,7 @@ createGUI = do
   addLabelScale row2Section4 scale8 "R"
 
   -- Third Row
-  row3 <- createRow SmallRow
+  row3 <- newRow SmallRow
   tableAttachDefaults table row3 0 4 2 3
   row3Section1 <- newSection row3
   row3Section2 <- newSection row3
@@ -119,7 +119,7 @@ createGUI = do
   addComboEntry combo5 "Delay Effect"
 
   -- Fourth Row
-  row4 <- createRow LargeRow
+  row4 <- newRow LargeRow
   tableAttachDefaults table row4 0 4 3 4
   row4Section1 <- newSection row4
   row4Section2 <- newSection row4
@@ -151,15 +151,15 @@ createGUI = do
 
 adjustSettings :: GUI -> IO ()
 adjustSettings gui = do
-  configurationWindow <- createWindow "Adjust Settings" 300 200
+  configurationWindow <- newWindow "Adjust Settings" 300 200
   widgetShowAll configurationWindow
 
 loadPatch :: GUI -> IO ()
 loadPatch gui = do
-  loadWindow <- createWindow "Load Patch" 150 100
+  loadWindow <- newWindow "Load Patch" 150 100
   widgetShowAll loadWindow
   --table <- tableNew 4 4 False
-  --topRow <- createRow SmallRow
+  --topRow <- newRow SmallRow
   --topSection <- newSection topRow
   --combo <- newCombo topSection
   --containerAdd topRow table
@@ -167,10 +167,10 @@ loadPatch gui = do
 
 savePatch :: GUI -> IO ()
 savePatch gui = do
-  saveWindow <- createWindow "Save Patch" 150 100
+  saveWindow <- newWindow "Save Patch" 150 100
   widgetShowAll saveWindow
   --table <- tableNew 4 4 False
-  --topRow <- createRow SmallRow
+  --topRow <- newRow SmallRow
   --topSection <- newSection topRow
   --combo <- newCombo topSection
   --containerAdd topRow table
@@ -241,19 +241,19 @@ addLabelScale section scale text = do
   widgetSetSizeRequest label 0 0
   containerAdd section slider
 
-createRow :: RowSize -> IO HBox
-createRow LargeRow = do
+newRow :: RowSize -> IO HBox
+newRow LargeRow = do
   row <- hBoxNew True 10
   widgetSetSizeRequest row 0 100
   return row
-createRow SmallRow = do
+newRow SmallRow = do
   row <- hBoxNew True 10
   containerSetBorderWidth row 10
   widgetSetSizeRequest row 0 0
   return row
 
-createWindow :: String -> Int -> Int -> IO Window
-createWindow title x y = do
+newWindow :: String -> Int -> Int -> IO Window
+newWindow title x y = do
   window <- windowNew
   set window
     [ windowTitle := title
