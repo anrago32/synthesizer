@@ -33,9 +33,8 @@ sineOsc pitch time = sin phase * 0.2
         frequency = standardPitch pitch
         sampleRate = 48000.0
 
--- FM Oscillator Prototype
--- fmOsc :: Pitch -> Int -> Float
--- fmOsc pitch time = sin (sineOsc pitch time * 2) * 0.2
+fmOsc :: Pitch -> Int -> Float
+fmOsc pitch time = sin (sineOsc pitch time * 10) * 0.2
 
 -- Create attack, decay, sustain, release envelope
 createEnvelope :: Int -> Int -> Int -> Int -> Envelope
