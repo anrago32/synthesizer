@@ -158,23 +158,23 @@ loadPatch :: Gui -> IO ()
 loadPatch gui = do
   loadWindow <- createWindow "Load Patch" 150 100
   widgetShowAll loadWindow
-  table <- tableNew 4 4 False
-  topRow <- createRow SmallRow
-  topSection <- newSection topRow
-  combo <- newCombo topSection
-  containerAdd topRow table
-  containerAdd loadWindow table
+  --table <- tableNew 4 4 False
+  --topRow <- createRow SmallRow
+  --topSection <- newSection topRow
+  --combo <- newCombo topSection
+  --containerAdd topRow table
+  --containerAdd loadWindow table
 
 savePatch :: Gui -> IO ()
 savePatch gui = do
   saveWindow <- createWindow "Save Patch" 150 100
   widgetShowAll saveWindow
-  table <- tableNew 4 4 False
-  topRow <- createRow SmallRow
-  topSection <- newSection topRow
-  combo <- newCombo topSection
-  containerAdd topRow table
-  containerAdd saveWindow table
+  --table <- tableNew 4 4 False
+  --topRow <- createRow SmallRow
+  --topSection <- newSection topRow
+  --combo <- newCombo topSection
+  --containerAdd topRow table
+  --containerAdd saveWindow table
 
 getPatch :: Gui -> IO Patch
 getPatch gui = do
