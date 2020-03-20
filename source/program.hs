@@ -87,13 +87,9 @@ keyboardHandler :: AudioPlayer -> State -> Event -> IO Bool
 keyboardHandler audioPlayer keyboardState event = case event of
     (Key released _ _ _ _ _ _ _ _ (Just character)) ->
       if Map.member character pitchMap
-        then do
-          notes <- readIORef keyboardState
-          let pitch = pitchMap ! character
-          if released
-            then handleKeyRelease character keyboardState
-            else handleKeyPress audioPlayer character keyboardState
-          return True
+        then if released
+          then handleKeyRelease character keyboardState >> return True
+          else handleKeyPress audioPlayer character keyboardState >> return True
         else return False
     _ -> return False
 
@@ -132,7 +128,6 @@ playAudio audioPlayer keyboardState = do
       let envelopeValues = calculateEnvelope envelope <$> notes
       let sample = sum $ zipWith (*) oscillatorValues envelopeValues
       simpleWrite audioPlayer $ [sample]
-
       stateIncrementTime keyboardState
       stateClean keyboardState envelope
       playAudio audioPlayer keyboardState
