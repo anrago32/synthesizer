@@ -9,7 +9,6 @@ import Data.IORef as IORef
 import Data.List as List
 import Data.Map as Map
 import Data.Maybe as Maybe
-import Data.Set as Set
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Gdk.Events
 import Sound.Pulse.Simple
@@ -27,7 +26,7 @@ stateCreateNote :: State -> Pitch -> IO ()
 stateCreateNote state p = do
   notes <- readIORef state
   let newNote = noteNew p
-  let newNotes = notes ++ [newNote]
+  let newNotes = List.insert newNote notes
   writeIORef state newNotes
 
 stateIncrementTime :: State -> IO ()
@@ -41,31 +40,22 @@ stateIncrementTime state = do
 stateReleaseNote :: State -> Envelope -> Pitch -> IO ()
 stateReleaseNote state envelope p = do
   notes <- readIORef state
-  let index = fromJust . elemIndex p $ pitch <$> notes
-  let note = notes !! index
+  let note = fromJust $ find (\x -> pitch x == p) notes
   let newNote = note {
     timeReleased = timeElapsed note,
     volumeReleased = calculateEnvelope envelope note}
-  let addNote n = (++) [n]
-  let removeNote n = List.filter (/= n)
-  let newNotes = addNote newNote . removeNote note $ notes
+  let newNotes = List.insert newNote . List.delete note $ notes
   writeIORef state newNotes
 
 stateClean :: State -> Envelope -> IO ()
 stateClean state envelope = do
   notes <- readIORef state
-  let noteLive n = timeElapsed n < timeReleased n + release envelope
-  let newNotes = List.filter noteLive notes
+  let live n = calculateEnvelope envelope n > 0
+  let newNotes = List.filter live notes
   writeIORef state newNotes
 
 main :: IO ()
 main = do
-  -- Begin Test
-
-
-
-  -- End Test
-
   initGUI
   gui <- guiNew
   audioPlayer <- playerNew
@@ -110,31 +100,6 @@ keyboardHandler audioPlayer keyboardState event = case event of
 sameNote :: Pitch -> Note -> Bool
 sameNote p note = p == pitch note
 
-append :: Note -> [Note] -> [Note]
-append new list = list ++ [new]
-
-replace :: Note -> Note -> [Note] -> [Note]
-replace old new list = append new $ List.filter (\x -> (not $ sameNote (pitch x) old)) list
-
-incrementTime :: Note -> Note
-incrementTime note = note {timeElapsed = t}
-  where t = timeElapsed note + 1
-
-incrementTimes :: [Note] -> [Note]
-incrementTimes notes = incrementTime <$> notes
-
-updateVolume :: Float -> Note -> Note
-updateVolume volume note = if timeReleased note == -1 then note {volumeReleased = volume} else note
-
-updateVolumes :: [Float] -> [Note] -> [Note]
-updateVolumes volumes notes = zipWith (updateVolume) volumes notes
-
-removeDeadNotes :: Envelope -> [Note] -> [Note]
-removeDeadNotes envelope notes = List.filter (not . noteDead envelope) notes
-
-noteDead :: Envelope -> Note -> Bool
-noteDead envelope note = timeReleased note /= -1 && timeElapsed note > timeReleased note + release envelope
-
 handleKeyPress :: AudioPlayer -> Char -> State -> IO ()
 handleKeyPress audioPlayer character keyboardState = do
   notes <- readIORef keyboardState
@@ -147,9 +112,6 @@ handleKeyPress audioPlayer character keyboardState = do
         then (forkIO $ playAudio audioPlayer keyboardState) >>= (\a -> return ())
         else (forkIO $ return ()) >>= (\a -> return ())
 
-      notes <- readIORef keyboardState
-      print notes
-
 handleKeyRelease :: Char -> State -> IO ()
 handleKeyRelease character keyboardState = do
   notes <- readIORef keyboardState
@@ -157,7 +119,7 @@ handleKeyRelease character keyboardState = do
   case i of
     Nothing -> return ()
     Just index -> do
-      let envelope = envelopeNew 10 10 90 25
+      let envelope = envelopeNew 10 25 75 10
       stateReleaseNote keyboardState envelope $ pitchMap ! character
 
 playAudio :: AudioPlayer -> State -> IO ()
@@ -165,7 +127,7 @@ playAudio audioPlayer keyboardState = do
   notes <- readIORef keyboardState
   if length notes /= 0
     then do
-      let envelope = envelopeNew 10 10 90 25
+      let envelope = envelopeNew 10 25 75 10
       let oscillatorValues = sineOscillator <$> notes
       let envelopeValues = calculateEnvelope envelope <$> notes
       let sample = sum $ zipWith (*) oscillatorValues envelopeValues

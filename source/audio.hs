@@ -21,7 +21,13 @@ data Note = Note
   , timeReleased   :: Float
   , volumeReleased :: Float
   , pitch          :: Pitch
-  } deriving (Eq, Show)
+  } deriving (Show)
+
+instance Eq Note where
+  a == b = pitch a == pitch b
+
+instance Ord Note where
+  a <= b = pitch a <= pitch b
 
 -- Data Constructors
 envelopeNew :: Int -> Int -> Int -> Int -> Envelope
@@ -59,9 +65,9 @@ calculateEnvelope envelope note
   | t < a = calculateAttack envelope note
   | t < a + d = calculateDecay envelope note
   | m == -1 = calculateSustain envelope note
-  | t < m + r = calculateRelease envelope note
-  where (Envelope a d s r) = envelope
-        (Note t m v p) = note
+  | otherwise = calculateRelease envelope note
+  where (Envelope a d _ _) = envelope
+        (Note t m _ _) = note
 
 calculateAttack :: Envelope -> Note -> Float
 calculateAttack envelope note = 1 + (t - a) ^ 3 / a ^ 3
