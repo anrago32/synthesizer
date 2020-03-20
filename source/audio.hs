@@ -21,22 +21,22 @@ data Note = Note
   , timeReleased   :: Float
   , volumeReleased :: Float
   , pitch          :: Pitch
-  } deriving (Show)
+  } deriving (Eq, Show)
 
 -- Data Constructors
-newEnvelope :: Int -> Int -> Int -> Int -> Envelope
-newEnvelope a d s r = Envelope
+envelopeNew :: Int -> Int -> Int -> Int -> Envelope
+envelopeNew a d s r = Envelope
   { attack = rescaleAttack a
   , decay = rescaleDecay d
   , sustain = rescaleSustain s
   , release = rescaleRelease r
   }
 
-newNote :: Pitch -> Note
-newNote p = Note
+noteNew :: Pitch -> Note
+noteNew p = Note
   { timeElapsed = 0
   , timeReleased = -1
-  , volumeReleased = 0
+  , volumeReleased = -1
   , pitch = p
   }
 
@@ -60,7 +60,6 @@ calculateEnvelope envelope note
   | t < a + d = calculateDecay envelope note
   | m == -1 = calculateSustain envelope note
   | t < m + r = calculateRelease envelope note
-  | otherwise = 0
   where (Envelope a d s r) = envelope
         (Note t m v p) = note
 

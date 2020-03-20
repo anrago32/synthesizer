@@ -36,8 +36,8 @@ data GUI = GUI
   , mainWindow       :: Window
   }
 
-newGUI :: IO GUI
-newGUI = do
+guiNew :: IO GUI
+guiNew = do
   -- Window Creation
   mainWindow <- newWindow "Synthesizer" 600 400
   table <- tableNew 4 4 False
@@ -183,46 +183,42 @@ getPatch gui = do
   c <- comboBoxGetActive $ lfoCombo         gui
   d <- comboBoxGetActive $ effectCombo      gui
   e <- rangeGetValue     $ volumeScale      gui
-  f <- rangeGetValue     $ octaveScale      gui
-  g <- rangeGetValue     $ glissandoScale   gui
-  h <- rangeGetValue     $ envelopeScale    gui
-  i <- rangeGetValue     $ attackScale      gui
-  j <- rangeGetValue     $ decayScale       gui
-  k <- rangeGetValue     $ sustainScale     gui
-  l <- rangeGetValue     $ releaseScale     gui
-  m <- rangeGetValue     $ modulationScale  gui
-  n <- rangeGetValue     $ textureScale     gui
-  o <- rangeGetValue     $ cutoffScale      gui
-  p <- rangeGetValue     $ resonanceScale   gui
-  q <- rangeGetValue     $ lfoDepthScale    gui
-  r <- rangeGetValue     $ lfoRateScale     gui
-  s <- rangeGetValue     $ effectDepthScale gui
-  t <- rangeGetValue     $ effectRateScale  gui
-  return $ Patch a b c d e f g h i j k l m n o p q r s t
+  f <- rangeGetValue     $ envelopeScale    gui
+  g <- rangeGetValue     $ attackScale      gui
+  h <- rangeGetValue     $ decayScale       gui
+  i <- rangeGetValue     $ sustainScale     gui
+  j <- rangeGetValue     $ releaseScale     gui
+  k <- rangeGetValue     $ modulationScale  gui
+  l <- rangeGetValue     $ textureScale     gui
+  m <- rangeGetValue     $ cutoffScale      gui
+  n <- rangeGetValue     $ resonanceScale   gui
+  o <- rangeGetValue     $ lfoDepthScale    gui
+  p <- rangeGetValue     $ lfoRateScale     gui
+  q <- rangeGetValue     $ effectDepthScale gui
+  r <- rangeGetValue     $ effectRateScale  gui
+  return $ Patch a b c d e f g h i j k l m n o p q r
 
 setPatch :: GUI -> String -> IO ()
 setPatch gui file = do
   patch <- read <$> readFile file
-  comboBoxSetActive (oscillatorCombo  gui) (oscillatorType patch)
-  comboBoxSetActive (filterCombo      gui) (filterType     patch)
-  comboBoxSetActive (lfoCombo         gui) (lfoType        patch)
-  comboBoxSetActive (effectCombo      gui) (effectType     patch)
-  rangeSetValue     (volumeScale      gui) (volume         patch)
-  rangeSetValue     (octaveScale      gui) (octave         patch)
-  rangeSetValue     (glissandoScale   gui) (glissando      patch)
-  rangeSetValue     (envelopeScale    gui) (envelope       patch)
-  rangeSetValue     (attackScale      gui) (attack         patch)
-  rangeSetValue     (decayScale       gui) (decay          patch)
-  rangeSetValue     (sustainScale     gui) (sustain        patch)
-  rangeSetValue     (releaseScale     gui) (release        patch)
-  rangeSetValue     (modulationScale  gui) (modulation     patch)
-  rangeSetValue     (textureScale     gui) (texture        patch)
-  rangeSetValue     (cutoffScale      gui) (cutoff         patch)
-  rangeSetValue     (resonanceScale   gui) (resonance      patch)
-  rangeSetValue     (lfoDepthScale    gui) (lfoDepth       patch)
-  rangeSetValue     (lfoRateScale     gui) (lfoRate        patch)
-  rangeSetValue     (effectDepthScale gui) (effectDepth    patch)
-  rangeSetValue     (effectRateScale  gui) (effectRate     patch)
+  comboBoxSetActive (oscillatorCombo  gui) (oscillatorType   patch)
+  comboBoxSetActive (filterCombo      gui) (filterType       patch)
+  comboBoxSetActive (lfoCombo         gui) (lfoType          patch)
+  comboBoxSetActive (effectCombo      gui) (effectType       patch)
+  rangeSetValue     (volumeScale      gui) (volumeLevel      patch)
+  rangeSetValue     (envelopeScale    gui) (envelopeLevel    patch)
+  rangeSetValue     (attackScale      gui) (attackLevel      patch)
+  rangeSetValue     (decayScale       gui) (decayLevel       patch)
+  rangeSetValue     (sustainScale     gui) (sustainLevel     patch)
+  rangeSetValue     (releaseScale     gui) (releaseLevel     patch)
+  rangeSetValue     (modulationScale  gui) (modulationLevel  patch)
+  rangeSetValue     (textureScale     gui) (textureLevel     patch)
+  rangeSetValue     (cutoffScale      gui) (cutoffLevel      patch)
+  rangeSetValue     (resonanceScale   gui) (resonanceLevel   patch)
+  rangeSetValue     (lfoDepthScale    gui) (lfoDepthLevel    patch)
+  rangeSetValue     (lfoRateScale     gui) (lfoRateLevel     patch)
+  rangeSetValue     (effectDepthScale gui) (effectDepthLevel patch)
+  rangeSetValue     (effectRateScale  gui) (effectRateLevel  patch)
 
 data RowSize = LargeRow | SmallRow
 

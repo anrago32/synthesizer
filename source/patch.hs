@@ -5,48 +5,44 @@
 module Patch where
 
 data Patch = Patch
-  { oscillatorType :: Int
-  , filterType     :: Int
-  , lfoType        :: Int
-  , effectType     :: Int
-  , volume         :: Double
-  , octave         :: Double
-  , glissando      :: Double
-  , envelope       :: Double
-  , attack         :: Double
-  , decay          :: Double
-  , sustain        :: Double
-  , release        :: Double
-  , modulation     :: Double
-  , texture        :: Double
-  , cutoff         :: Double
-  , resonance      :: Double
-  , lfoDepth       :: Double
-  , lfoRate        :: Double
-  , effectDepth    :: Double
-  , effectRate     :: Double
+  { oscillatorType   :: Int
+  , filterType       :: Int
+  , lfoType          :: Int
+  , effectType       :: Int
+  , volumeLevel      :: Double
+  , envelopeLevel    :: Double
+  , attackLevel      :: Double
+  , decayLevel       :: Double
+  , sustainLevel     :: Double
+  , releaseLevel     :: Double
+  , modulationLevel  :: Double
+  , textureLevel     :: Double
+  , cutoffLevel      :: Double
+  , resonanceLevel   :: Double
+  , lfoDepthLevel    :: Double
+  , lfoRateLevel     :: Double
+  , effectDepthLevel :: Double
+  , effectRateLevel  :: Double
   } deriving (Read)
 
 instance Show Patch where
   show patch = "Patch\n"
-    ++ "  { oscillatorType = " ++ show (oscillatorType patch) ++ "\n"
-    ++ "  , filterType     = " ++ show (filterType     patch) ++ "\n"
-    ++ "  , lfoType        = " ++ show (lfoType        patch) ++ "\n"
-    ++ "  , effectType     = " ++ show (effectType     patch) ++ "\n"
-    ++ "  , volume         = " ++ show (volume         patch) ++ "\n"
-    ++ "  , octave         = " ++ show (octave         patch) ++ "\n"
-    ++ "  , glissando      = " ++ show (glissando      patch) ++ "\n"
-    ++ "  , envelope       = " ++ show (envelope       patch) ++ "\n"
-    ++ "  , attack         = " ++ show (attack         patch) ++ "\n"
-    ++ "  , decay          = " ++ show (decay          patch) ++ "\n"
-    ++ "  , sustain        = " ++ show (sustain        patch) ++ "\n"
-    ++ "  , release        = " ++ show (release        patch) ++ "\n"
-    ++ "  , modulation     = " ++ show (modulation     patch) ++ "\n"
-    ++ "  , texture        = " ++ show (texture        patch) ++ "\n"
-    ++ "  , cutoff         = " ++ show (cutoff         patch) ++ "\n"
-    ++ "  , resonance      = " ++ show (resonance      patch) ++ "\n"
-    ++ "  , lfoDepth       = " ++ show (lfoDepth       patch) ++ "\n"
-    ++ "  , lfoRate        = " ++ show (lfoRate        patch) ++ "\n"
-    ++ "  , effectDepth    = " ++ show (effectDepth    patch) ++ "\n"
-    ++ "  , effectRate     = " ++ show (effectRate     patch) ++ "\n"
+    ++ "  { oscillatorType   = " ++ show (oscillatorType   patch) ++ "\n"
+    ++ "  , filterType       = " ++ show (filterType       patch) ++ "\n"
+    ++ "  , lfoType          = " ++ show (lfoType          patch) ++ "\n"
+    ++ "  , effectType       = " ++ show (effectType       patch) ++ "\n"
+    ++ "  , volumeLevel      = " ++ show (volumeLevel      patch) ++ "\n"
+    ++ "  , envelopeLevel    = " ++ show (envelopeLevel    patch) ++ "\n"
+    ++ "  , attackLevel      = " ++ show (attackLevel      patch) ++ "\n"
+    ++ "  , decayLevel       = " ++ show (decayLevel       patch) ++ "\n"
+    ++ "  , sustainLevel     = " ++ show (sustainLevel     patch) ++ "\n"
+    ++ "  , releaseLevel     = " ++ show (releaseLevel     patch) ++ "\n"
+    ++ "  , modulationLevel  = " ++ show (modulationLevel  patch) ++ "\n"
+    ++ "  , textureLevel     = " ++ show (textureLevel     patch) ++ "\n"
+    ++ "  , cutoffLevel      = " ++ show (cutoffLevel      patch) ++ "\n"
+    ++ "  , resonanceLevel   = " ++ show (resonanceLevel   patch) ++ "\n"
+    ++ "  , lfoDepthLevel    = " ++ show (lfoDepthLevel    patch) ++ "\n"
+    ++ "  , lfoRateLevel     = " ++ show (lfoRateLevel     patch) ++ "\n"
+    ++ "  , effectDepthLevel = " ++ show (effectDepthLevel patch) ++ "\n"
+    ++ "  , effectRateLevel  = " ++ show (effectRateLevel  patch) ++ "\n"
     ++ "  }\n"
