@@ -9,6 +9,7 @@ import Data.IORef as IORef
 import Data.List as List
 import Data.Map as Map
 import Data.Maybe as Maybe
+import Data.Set as Set
 import Graphics.UI.Gtk
 import Graphics.UI.Gtk.Gdk.Events
 import Sound.Pulse.Simple
@@ -81,7 +82,7 @@ main = do
   simpleFree audioPlayer
 
 pitchMap :: Map Char Pitch
-pitchMap = fromList
+pitchMap = Map.fromList
   [ ('z', (C, 4)), ('s', (Cs, 4)), ('x', (D, 4)), ('d', (Ds, 4)), ('c', (E, 4))
   , ('v', (F, 4)), ('g', (Fs, 4)), ('b', (G, 4)), ('h', (Gs, 4)), ('n', (A, 4))
   , ('j', (As, 4)), ('m', (B, 4)), (',', (C, 5)), ('l', (Cs, 5)), ('.', (D, 5))
@@ -95,7 +96,7 @@ pitchMap = fromList
 keyboardHandler :: AudioPlayer -> State -> Event -> IO Bool
 keyboardHandler audioPlayer keyboardState event = case event of
     (Key released _ _ _ _ _ _ _ _ (Just character)) ->
-      if member character pitchMap
+      if Map.member character pitchMap
         then do
           notes <- readIORef keyboardState
           let pitch = pitchMap ! character
@@ -141,8 +142,7 @@ handleKeyPress audioPlayer character keyboardState = do
   case i of
     (Just index) -> return ()
     Nothing -> do
-      let newNote = noteNew $ pitchMap ! character
-      modifyIORef keyboardState (++ [newNote])
+      stateCreateNote keyboardState $ pitchMap ! character
       if length notes == 0
         then (forkIO $ playAudio audioPlayer keyboardState) >>= (\a -> return ())
         else (forkIO $ return ()) >>= (\a -> return ())
@@ -157,10 +157,8 @@ handleKeyRelease character keyboardState = do
   case i of
     Nothing -> return ()
     Just index -> do
-      let oldNote = notes !! index
-      let t = timeElapsed oldNote
-      let newNote = oldNote {timeReleased = t}
-      modifyIORef keyboardState (replace oldNote newNote)
+      let envelope = envelopeNew 10 10 90 25
+      stateReleaseNote keyboardState envelope $ pitchMap ! character
 
 playAudio :: AudioPlayer -> State -> IO ()
 playAudio audioPlayer keyboardState = do
@@ -172,9 +170,9 @@ playAudio audioPlayer keyboardState = do
       let envelopeValues = calculateEnvelope envelope <$> notes
       let sample = sum $ zipWith (*) oscillatorValues envelopeValues
       simpleWrite audioPlayer $ [sample]
-      modifyIORef keyboardState (incrementTimes)
-      modifyIORef keyboardState (updateVolumes envelopeValues)
-      modifyIORef keyboardState (removeDeadNotes envelope)
+
+      stateIncrementTime keyboardState
+      stateClean keyboardState envelope
       playAudio audioPlayer keyboardState
     else return ()
 
