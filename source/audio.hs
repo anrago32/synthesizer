@@ -7,8 +7,6 @@ module Audio where
 import Sound.Pulse.Simple
 import Pitch
 
-type AudioPlayer = Simple
-
 data Envelope = Envelope
   { attack         :: Float
   , decay          :: Float
@@ -21,11 +19,11 @@ data Note = Note
   , timeReleased   :: Float
   , volumeReleased :: Float
   , pitch          :: Pitch
-  } deriving (Show)
+  }
 
 instance Eq Note where
   a == b = pitch a == pitch b
-
+--
 instance Ord Note where
   a <= b = pitch a <= pitch b
 
@@ -62,10 +60,10 @@ rescaleRelease level = 1e-4 * fromIntegral level ^ 3 * 48000
 -- Envelope Generation
 calculateEnvelope :: Envelope -> Note -> Float
 calculateEnvelope envelope note
+  | m /= -1 = calculateRelease envelope note
   | t < a = calculateAttack envelope note
   | t < a + d = calculateDecay envelope note
-  | m == -1 = calculateSustain envelope note
-  | otherwise = calculateRelease envelope note
+  | otherwise = calculateSustain envelope note
   where (Envelope a d _ _) = envelope
         (Note t m _ _) = note
 
