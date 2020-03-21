@@ -4,9 +4,9 @@
 
 module Pitch where
 
-type Pitch = (OctavelessPitch, Int)
+type Pitch = (NoteName, Int)
 
-data OctavelessPitch = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
+data NoteName = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
   deriving (Eq, Ord, Show)
 
 intToPitch :: Int -> Pitch

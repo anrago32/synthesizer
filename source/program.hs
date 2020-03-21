@@ -31,12 +31,12 @@ main = do
   let envelope = envelopeNew 10 25 75 25
 
   forkIO $ playAudio state envelope player
-  setPatch gui "/home/anrago/code/synthesizer/files/default.patch"
   onClicked (adjustButton gui) (adjustSettings gui)
   onClicked (loadButton gui) (loadPatch gui)
   onClicked (saveButton gui) (savePatch gui)
   onKeyPress (mainWindow gui) (handleKeyEvent state envelope)
   onKeyRelease (mainWindow gui) (handleKeyEvent state envelope)
+  setPatch gui "/home/anrago/code/synthesizer/files/default.patch"
 
   mainGUI
   simpleFree player
@@ -126,12 +126,9 @@ handleKeyRelease state envelope p = do
 
 keyPitchMap :: Map String Pitch
 keyPitchMap = Map.fromList
-  [ ("z", (C, 4)), ("s", (Cs, 4)), ("x", (D, 4)), ("d", (Ds, 4)), ("c", (E, 4))
-  , ("v", (F, 4)), ("g", (Fs, 4)), ("b", (G, 4)), ("h", (Gs, 4)), ("n", (A, 4))
-  , ("j", (As, 4)), ("m", (B, 4)), (",", (C, 5)), ("l", (Cs, 5)), (".", (D, 5))
-  , (";", (Ds, 5)), ("/", (E, 5)), ("q", (C, 5)), ("2", (Cs, 5)), ("w", (D, 5))
-  , ("3", (Ds, 5)), ("e", (E, 5)), ("r", (F, 5)), ("5", (Fs, 5)), ("t", (G, 5))
-  , ("6", (Gs, 5)), ("y", (A, 5)), ("7", (As, 5)), ("u", (B, 5)), ("i", (C, 6))
-  , ("9", (Cs, 6)), ("o", (D, 6)), ("0", (Ds, 6)), ("p", (E, 6)), ("[", (F, 6))
-  , ("=", (Fs, 6)), ("]", (G, 6)), ("\\", (A, 6))
+  [ ("Shift_L", (C, 4)), ("a", (Cs, 4)), ("z", (D, 4)), ("s", (Ds, 4))
+  , ("x", (E, 4)), ("c", (F, 4)), ("f", (Fs, 4)), ("v", (G, 4)), ("g", (Gs, 4))
+  , ("b", (A, 4)), ("h", (As, 4)), ("n", (B, 4)), ("m", (C, 5)), ("k", (Cs, 5))
+  , ("comma", (D, 5)), ("l", (Ds, 5)), ("period", (E, 5)), ("slash", (F, 5))
+  , ("apostrophe", (Fs, 5)), ("Shift_R", (G, 5))
   ]
