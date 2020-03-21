@@ -41,62 +41,6 @@ main = do
   mainGUI
   simpleFree player
 
--- Audio Output
-playAudio :: State -> Envelope -> Player -> IO ()
-playAudio state envelope player = do
-  notes <- stateRead state
-  let oscillatorValues = sineOscillator <$> notes
-  let envelopeValues = calculateEnvelope envelope <$> notes
-  let sample = sum $ List.zipWith (*) oscillatorValues envelopeValues
-  simpleWrite player [sample]; stateIncrementTime state
-  stateClearDead state envelope; playAudio state envelope player
-
-playerNew :: IO Player
-playerNew = do
-  let sampleFormat = F32 LittleEndian
-  let sampleSpec = SampleSpec sampleFormat 48000 1
-  player <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
-  return player
-
--- Event Handling
-handleKeyEvent :: State -> Envelope -> Event -> IO Bool
-handleKeyEvent state envelope event = do
-  let key = unpack $ Events.eventKeyName event
-  if member key pitchMap && not (eventRelease event)
-  then handleKeyPress state envelope $ pitchMap ! key
-  else if member key pitchMap && eventRelease event
-  then handleKeyRelease state envelope $ pitchMap ! key
-  else return (); return True
-
-handleKeyPress :: State -> Envelope -> Pitch -> IO ()
-handleKeyPress state envelope p = do
-  notes <- stateRead state
-  if elem p (pitch <$> notes) then do
-    let note = fromJust $ List.find ((== p) . pitch) notes
-    if timeReleased note /= -1
-    then stateBeginNote state p
-    else return ()
-  else stateBeginNote state p
-
-handleKeyRelease :: State -> Envelope -> Pitch -> IO ()
-handleKeyRelease state envelope p = do
-  notes <- stateRead state
-  if elem p (pitch <$> notes)
-  then stateReleaseNote state envelope p
-  else return ()
-
-pitchMap :: Map String Pitch
-pitchMap = Map.fromList
-  [ ("z", (C, 4)), ("s", (Cs, 4)), ("x", (D, 4)), ("d", (Ds, 4)), ("c", (E, 4))
-  , ("v", (F, 4)), ("g", (Fs, 4)), ("b", (G, 4)), ("h", (Gs, 4)), ("n", (A, 4))
-  , ("j", (As, 4)), ("m", (B, 4)), (",", (C, 5)), ("l", (Cs, 5)), (".", (D, 5))
-  , (";", (Ds, 5)), ("/", (E, 5)), ("q", (C, 5)), ("2", (Cs, 5)), ("w", (D, 5))
-  , ("3", (Ds, 5)), ("e", (E, 5)), ("r", (F, 5)), ("5", (Fs, 5)), ("t", (G, 5))
-  , ("6", (Gs, 5)), ("y", (A, 5)), ("7", (As, 5)), ("u", (B, 5)), ("i", (C, 6))
-  , ("9", (Cs, 6)), ("o", (D, 6)), ("0", (Ds, 6)), ("p", (E, 6)), ("[", (F, 6))
-  , ("=", (Fs, 6)), ("]", (G, 6)), ("\\", (A, 6))
-  ]
-
 -- State Operations
 stateNew :: IO State
 stateNew = newIORef []
@@ -135,3 +79,59 @@ stateReleaseNote state envelope p = do
     volumeReleased = calculateEnvelope envelope note}
   let newNotes = List.insert newNote . List.delete note $ notes
   writeIORef state newNotes
+
+-- Audio Output
+playAudio :: State -> Envelope -> Player -> IO ()
+playAudio state envelope player = do
+  notes <- stateRead state
+  let oscillatorValues = sineOscillator <$> notes
+  let envelopeValues = calculateEnvelope envelope <$> notes
+  let sample = sum $ List.zipWith (*) oscillatorValues envelopeValues
+  simpleWrite player [sample]; stateIncrementTime state
+  stateClearDead state envelope; playAudio state envelope player
+
+playerNew :: IO Player
+playerNew = do
+  let sampleFormat = F32 LittleEndian
+  let sampleSpec = SampleSpec sampleFormat 48000 1
+  player <- simpleNew Nothing "" Play Nothing "" sampleSpec Nothing Nothing
+  return player
+
+-- Event Handling
+handleKeyEvent :: State -> Envelope -> Event -> IO Bool
+handleKeyEvent state envelope event = do
+  let key = unpack $ Events.eventKeyName event
+  if member key keyPitchMap && not (eventRelease event)
+  then handleKeyPress state envelope $ keyPitchMap ! key
+  else if member key keyPitchMap && eventRelease event
+  then handleKeyRelease state envelope $ keyPitchMap ! key
+  else return (); return True
+
+handleKeyPress :: State -> Envelope -> Pitch -> IO ()
+handleKeyPress state envelope p = do
+  notes <- stateRead state
+  if elem p (pitch <$> notes) then do
+    let note = fromJust $ List.find ((== p) . pitch) notes
+    if timeReleased note /= -1
+    then stateBeginNote state p
+    else return ()
+  else stateBeginNote state p
+
+handleKeyRelease :: State -> Envelope -> Pitch -> IO ()
+handleKeyRelease state envelope p = do
+  notes <- stateRead state
+  if elem p (pitch <$> notes)
+  then stateReleaseNote state envelope p
+  else return ()
+
+keyPitchMap :: Map String Pitch
+keyPitchMap = Map.fromList
+  [ ("z", (C, 4)), ("s", (Cs, 4)), ("x", (D, 4)), ("d", (Ds, 4)), ("c", (E, 4))
+  , ("v", (F, 4)), ("g", (Fs, 4)), ("b", (G, 4)), ("h", (Gs, 4)), ("n", (A, 4))
+  , ("j", (As, 4)), ("m", (B, 4)), (",", (C, 5)), ("l", (Cs, 5)), (".", (D, 5))
+  , (";", (Ds, 5)), ("/", (E, 5)), ("q", (C, 5)), ("2", (Cs, 5)), ("w", (D, 5))
+  , ("3", (Ds, 5)), ("e", (E, 5)), ("r", (F, 5)), ("5", (Fs, 5)), ("t", (G, 5))
+  , ("6", (Gs, 5)), ("y", (A, 5)), ("7", (As, 5)), ("u", (B, 5)), ("i", (C, 6))
+  , ("9", (Cs, 6)), ("o", (D, 6)), ("0", (Ds, 6)), ("p", (E, 6)), ("[", (F, 6))
+  , ("=", (Fs, 6)), ("]", (G, 6)), ("\\", (A, 6))
+  ]
