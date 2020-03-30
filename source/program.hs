@@ -126,9 +126,13 @@ handleKeyRelease state envelope p = do
 
 keyPitchMap :: Map String Pitch
 keyPitchMap = Map.fromList
-  [ ("Shift_L", (C, 4)), ("a", (Cs, 4)), ("z", (D, 4)), ("s", (Ds, 4))
-  , ("x", (E, 4)), ("c", (F, 4)), ("f", (Fs, 4)), ("v", (G, 4)), ("g", (Gs, 4))
-  , ("b", (A, 4)), ("h", (As, 4)), ("n", (B, 4)), ("m", (C, 5)), ("k", (Cs, 5))
-  , ("comma", (D, 5)), ("l", (Ds, 5)), ("period", (E, 5)), ("slash", (F, 5))
-  , ("apostrophe", (Fs, 5)), ("Shift_R", (G, 5))
+  [ ("Shift_L", (C, 4)), ("A", (Cs, 4)), ("a", (Cs, 4)), ("Z", (D, 4))
+  , ("z", (D, 4)), ("S", (Ds, 4)), ("s", (Ds, 4)), ("X", (E, 4)), ("x", (E, 4))
+  , ("C", (F, 4)), ("c", (F, 4)), ("F", (Fs, 4)), ("f", (Fs, 4)), ("V", (G, 4))
+  , ("v", (G, 4)), ("G", (Gs, 4)), ("g", (Gs, 4)), ("B", (A, 4)), ("b", (A, 4))
+  , ("H", (As, 4)), ("h", (As, 4)), ("N", (B, 4)), ("n", (B, 4)), ("M", (C, 5))
+  , ("m", (C, 5)), ("K", (Cs, 5)), ("k", (Cs, 5)), ("less", (D, 5))
+  , ("comma", (D, 5)), ("L", (Ds, 5)), ("l", (Ds, 5)), ("greater", (E, 5))
+  , ("period", (E, 5)), ("question", (F, 5)), ("slash", (F, 5))
+  , ("quotedbl", (Fs, 5)), ("apostrophe", (Fs, 5)), ("Shift_R", (G, 5))
   ]
