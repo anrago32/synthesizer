@@ -1,5 +1,5 @@
 -- Audio
--- Description goes here
+-- Module for audio generation
 -- Written by Alex Rago, 2020
 
 module Audio where

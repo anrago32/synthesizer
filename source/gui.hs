@@ -1,5 +1,5 @@
 -- GUI
--- Description goes here
+-- Module for GUI creation
 -- Written by Alex Rago, 2020
 
 module GUI where
