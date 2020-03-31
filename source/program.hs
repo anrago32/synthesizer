@@ -41,45 +41,6 @@ main = do
   mainGUI
   simpleFree player
 
--- State Operations
-stateNew :: IO State
-stateNew = newIORef []
-
-stateRead :: State -> IO [Note]
-stateRead state = readIORef state
-
-stateBeginNote :: State -> Pitch -> IO ()
-stateBeginNote state p = do
-  notes <- readIORef state
-  let newNote = noteNew p
-  let newNotes = List.insert newNote notes
-  writeIORef state newNotes
-
-stateClearDead :: State -> Envelope -> IO ()
-stateClearDead state envelope = do
-  notes <- readIORef state
-  let live n = calculateEnvelope envelope n > 0
-  let newNotes = List.filter live notes
-  writeIORef state newNotes
-
-stateIncrementTime :: State -> IO ()
-stateIncrementTime state = do
-  notes <- readIORef state
-  let increment note = note {
-    timeElapsed = timeElapsed note + 1}
-  let newNotes = increment <$> notes
-  writeIORef state newNotes
-
-stateReleaseNote :: State -> Envelope -> Pitch -> IO ()
-stateReleaseNote state envelope p = do
-  notes <- readIORef state
-  let note = fromJust $ List.find ((== p) . pitch) notes
-  let newNote = note {
-    timeReleased = timeElapsed note,
-    volumeReleased = calculateEnvelope envelope note}
-  let newNotes = List.insert newNote . List.delete note $ notes
-  writeIORef state newNotes
-
 -- Audio Output
 playAudio :: State -> Envelope -> Player -> IO ()
 playAudio state envelope player = do
@@ -136,3 +97,42 @@ keyPitchMap = Map.fromList
   , ("period", (E, 5)), ("question", (F, 5)), ("slash", (F, 5))
   , ("quotedbl", (Fs, 5)), ("apostrophe", (Fs, 5)), ("Shift_R", (G, 5))
   ]
+
+-- State Operations
+stateNew :: IO State
+stateNew = newIORef []
+
+stateRead :: State -> IO [Note]
+stateRead state = readIORef state
+
+stateBeginNote :: State -> Pitch -> IO ()
+stateBeginNote state p = do
+  notes <- readIORef state
+  let newNote = noteNew p
+  let newNotes = List.insert newNote notes
+  writeIORef state newNotes
+
+stateClearDead :: State -> Envelope -> IO ()
+stateClearDead state envelope = do
+  notes <- readIORef state
+  let live n = calculateEnvelope envelope n > 0
+  let newNotes = List.filter live notes
+  writeIORef state newNotes
+
+stateIncrementTime :: State -> IO ()
+stateIncrementTime state = do
+  notes <- readIORef state
+  let increment note = note {
+    timeElapsed = timeElapsed note + 1}
+  let newNotes = increment <$> notes
+  writeIORef state newNotes
+
+stateReleaseNote :: State -> Envelope -> Pitch -> IO ()
+stateReleaseNote state envelope p = do
+  notes <- readIORef state
+  let note = fromJust $ List.find ((== p) . pitch) notes
+  let newNote = note {
+    timeReleased = timeElapsed note,
+    volumeReleased = calculateEnvelope envelope note}
+  let newNotes = List.insert newNote . List.delete note $ notes
+  writeIORef state newNotes
