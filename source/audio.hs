@@ -58,8 +58,8 @@ rescaleRelease :: Int -> Float
 rescaleRelease level = 1e-4 * fromIntegral level ^ 3 * 48000
 
 -- Envelope Generation
-calculateEnvelope :: Envelope -> Note -> Float
-calculateEnvelope envelope note
+generateEnvelope :: Envelope -> Note -> Float
+generateEnvelope envelope note
   | m /= -1 = calculateRelease envelope note
   | t < a = calculateAttack envelope note
   | t < a + d = calculateDecay envelope note

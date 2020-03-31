@@ -46,7 +46,7 @@ playAudio :: State -> Envelope -> Player -> IO ()
 playAudio state envelope player = do
   notes <- stateRead state
   let oscillatorValues = sineOscillator <$> notes
-  let envelopeValues = calculateEnvelope envelope <$> notes
+  let envelopeValues = generateEnvelope envelope <$> notes
   let sample = sum $ List.zipWith (*) oscillatorValues envelopeValues
   simpleWrite player [sample]; stateIncrementTime state
   stateClearDead state envelope; playAudio state envelope player
@@ -115,7 +115,7 @@ stateBeginNote state p = do
 stateClearDead :: State -> Envelope -> IO ()
 stateClearDead state envelope = do
   notes <- readIORef state
-  let live n = calculateEnvelope envelope n > 0
+  let live n = generateEnvelope envelope n > 0
   let newNotes = List.filter live notes
   writeIORef state newNotes
 
@@ -133,6 +133,6 @@ stateReleaseNote state envelope p = do
   let note = fromJust $ List.find ((== p) . pitch) notes
   let newNote = note {
     timeReleased = timeElapsed note,
-    volumeReleased = calculateEnvelope envelope note}
+    volumeReleased = generateEnvelope envelope note}
   let newNotes = List.insert newNote . List.delete note $ notes
   writeIORef state newNotes
