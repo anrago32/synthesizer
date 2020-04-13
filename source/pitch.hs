@@ -4,27 +4,27 @@
 
 module Pitch where
 
-type Pitch = (NoteName, Int)
+type Pitch = (Name, Int)
 
-data NoteName = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
+data Name = C | Cs | D | Ds | E | F | Fs | G | Gs | A | As | B
   deriving (Eq, Ord, Show)
 
 intToPitch :: Int -> Pitch
 intToPitch number
-  | note == 0  = (C , octave)
-  | note == 1  = (Cs, octave)
-  | note == 2  = (D , octave)
-  | note == 3  = (Ds, octave)
-  | note == 4  = (E , octave)
-  | note == 5  = (F , octave)
-  | note == 6  = (Fs, octave)
-  | note == 7  = (G , octave)
-  | note == 8  = (Gs, octave)
-  | note == 9  = (A , octave)
-  | note == 10 = (As, octave)
-  | note == 11 = (B , octave)
-  where note = number `mod` 12
-        octave = number `div` 12
+  | name == 0  = (C , octave)
+  | name == 1  = (Cs, octave)
+  | name == 2  = (D , octave)
+  | name == 3  = (Ds, octave)
+  | name == 4  = (E , octave)
+  | name == 5  = (F , octave)
+  | name == 6  = (Fs, octave)
+  | name == 7  = (G , octave)
+  | name == 8  = (Gs, octave)
+  | name == 9  = (A , octave)
+  | name == 10 = (As, octave)
+  | name == 11 = (B , octave)
+  where name = mod number 12
+        octave = div number 12
 
 pitchToInt :: Pitch -> Int
 pitchToInt (C , octave) = octave * 12 + 0
