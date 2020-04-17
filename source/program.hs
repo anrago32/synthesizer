@@ -1,5 +1,5 @@
 -- Synthesizer
--- Audio synthesizer written in haskell
+-- Audio Synthesizer Written in Haskell
 -- Written by Alex Rago, 2020
 
 module Main where

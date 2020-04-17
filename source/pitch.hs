@@ -1,5 +1,5 @@
 -- Pitch
--- Module containing pitch data type
+-- Module Containing Pitch Data Type
 -- Written by Alex Rago, 2020
 
 module Pitch where

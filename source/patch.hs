@@ -1,5 +1,5 @@
 -- Patch
--- Module containing patch data type
+-- Module Containing Patch Data Type
 -- Written by Alex Rago, 2020
 
 module Patch where
