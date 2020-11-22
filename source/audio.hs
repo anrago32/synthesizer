@@ -1,7 +1,3 @@
--- Audio
--- Module for Audio Generation
--- Written by Alex Rago, 2020
-
 module Audio where
 
 import Sound.Pulse.Simple

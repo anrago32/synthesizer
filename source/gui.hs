@@ -1,7 +1,3 @@
--- GUI
--- Module for GUI Creation
--- Written by Alex Rago, 2020
-
 module GUI where
 
 import Data.Text (pack)

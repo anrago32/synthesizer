@@ -1,7 +1,3 @@
--- Synthesizer
--- Audio Synthesizer Written in Haskell
--- Written by Alex Rago, 2020
-
 module Main where
 
 import Audio
@@ -112,19 +108,13 @@ stateBeginNote state p = do
   let newNotes = List.insert newNote notes
   writeIORef state newNotes
 
-stateClearDead :: State -> Envelope -> IO ()
-stateClearDead state envelope = do
-  notes <- readIORef state
-  let live n = generateEnvelope envelope n > 0
-  let newNotes = List.filter live notes
-  writeIORef state newNotes
-
 stateIncrementTime :: State -> IO ()
 stateIncrementTime state = do
   notes <- readIORef state
+  let live n = generateEnvelope envelope n > 0
   let increment note = note {
     timeElapsed = timeElapsed note + 1}
-  let newNotes = increment <$> notes
+  let newNotes = increment <$> List.filter live notes
   writeIORef state newNotes
 
 stateReleaseNote :: State -> Envelope -> Pitch -> IO ()

@@ -1,7 +1,3 @@
--- Pitch
--- Module Containing Pitch Data Type
--- Written by Alex Rago, 2020
-
 module Pitch where
 
 type Pitch = (Name, Int)
