@@ -19,7 +19,7 @@ data Note = Note
 
 instance Eq Note where
   a == b = pitch a == pitch b
---
+
 instance Ord Note where
   a <= b = pitch a <= pitch b
 
