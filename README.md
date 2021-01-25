@@ -8,7 +8,7 @@ Development is still in early stages.
 
 To build the executable:
 
-    $ ./build.sh
+    $ ./build
 
 To run the program:
 
